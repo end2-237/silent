@@ -3,6 +3,7 @@
 import Link from "next/link";
 import { usePathname, useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
+import Backdrop from "./Backdrop";
 import BottomBar from "./BottomBar";
 import { HOME, NAV } from "./Nav";
 
@@ -58,6 +59,7 @@ export default function AppShell({ children }: { children: React.ReactNode }) {
 
   return (
     <div className="shell">
+      <Backdrop />
       <a className="skip" href="#contenu">
         Aller au contenu
       </a>

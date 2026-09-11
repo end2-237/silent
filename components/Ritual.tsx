@@ -100,23 +100,32 @@ export default function Ritual() {
 
   return (
     <>
-      <header className="page-head">
-        <span className="page-head__kicker">Rituel — environ {formatDuration(RITUAL_MINUTES)}</span>
-        <h1>La journée, geste après geste</h1>
-        <p>
-          La parole mal maîtrisée crée du bruit. Pendant cinq heures, le cerveau désactive ses réponses
-          automatiques&nbsp;: on observe, on ressent, on mesure l&apos;impact de chaque geste avant de le poser.
-        </p>
-      </header>
+      <div className="banner">
+        <header className="page-head">
+          <span className="page-head__kicker">Rituel — environ {formatDuration(RITUAL_MINUTES)}</span>
+          <h1>La journée, geste après geste</h1>
+          <span className="page-head__sub">5 étapes · 5 signes · 1 question</span>
+          <p>
+            La parole mal maîtrisée crée du bruit. Pendant cinq heures, le cerveau désactive ses réponses
+            automatiques&nbsp;: on observe, on ressent, on mesure l&apos;impact de chaque geste avant de le
+            poser.
+          </p>
+        </header>
+        <div className="banner__meta">
+          <span className="tag">{formatDuration(TOTAL_MINUTES)} d&apos;étapes</span>
+          <span className="tag">{done.value.length}/{STEPS.length} franchies</span>
+          <span className="tag">
+            {formatFcfa(BUDGET_TOTAL.min).replace(" FCFA", "")} – {formatFcfa(BUDGET_TOTAL.max)}
+          </span>
+        </div>
+      </div>
 
       <div className="hero">
         {/* Chronomètre du silence */}
         <section className="panel">
           <div className="panel__title">
             <span>Chronomètre du silence</span>
-            <span className="panel__hint">
-              objectif {formatDuration(RITUAL_MINUTES)} · {formatDuration(TOTAL_MINUTES)} d&apos;étapes
-            </span>
+            <span className="panel__hint">objectif {formatDuration(RITUAL_MINUTES)}</span>
           </div>
           <div className="chrono">
             <div className="chrono__value">{clock(elapsed)}</div>
@@ -199,14 +208,19 @@ export default function Ritual() {
 
           {jokerDraft ? (
             <div className="field" style={{ marginTop: 14 }}>
-              <input
-                className="input"
-                autoFocus
-                placeholder="La phrase prononcée…"
-                value={jokerDraft.phrase}
-                onChange={(event) => setJokerDraft({ ...jokerDraft, phrase: event.target.value })}
-                onKeyDown={(event) => event.key === "Enter" && saveJoker()}
-              />
+              <span className="input-wrap">
+                <span className="input-wrap__icon" aria-hidden="true">
+                  🤍
+                </span>
+                <input
+                  className="input"
+                  autoFocus
+                  placeholder="La phrase prononcée…"
+                  value={jokerDraft.phrase}
+                  onChange={(event) => setJokerDraft({ ...jokerDraft, phrase: event.target.value })}
+                  onKeyDown={(event) => event.key === "Enter" && saveJoker()}
+                />
+              </span>
               <button type="button" className="btn" onClick={saveJoker} disabled={!jokerWords.length}>
                 Noter
               </button>
@@ -298,14 +312,19 @@ export default function Ritual() {
           <span className="panel__hint">3 mots maximum par note</span>
         </div>
         <div className="field">
-          <input
-            className="input"
-            placeholder="Trois mots, pas un de plus"
-            value={draft}
-            onChange={(event) => setDraft(event.target.value)}
-            onKeyDown={(event) => event.key === "Enter" && addNote()}
-            aria-invalid={noteTooLong}
-          />
+          <span className="input-wrap">
+            <span className="input-wrap__icon" aria-hidden="true">
+              ✎
+            </span>
+            <input
+              className="input"
+              placeholder="Trois mots, pas un de plus"
+              value={draft}
+              onChange={(event) => setDraft(event.target.value)}
+              onKeyDown={(event) => event.key === "Enter" && addNote()}
+              aria-invalid={noteTooLong}
+            />
+          </span>
           <button type="button" className="btn" onClick={addNote} disabled={!noteWords.length || noteTooLong}>
             Noter
           </button>
@@ -314,7 +333,7 @@ export default function Ritual() {
           </span>
         </div>
         {noteTooLong ? (
-          <p className="note" style={{ color: "var(--ember)", marginTop: 8 }}>
+          <p className="note" style={{ color: "var(--accent)", marginTop: 8 }}>
             Trop long. La contrainte fait la valeur de la note.
           </p>
         ) : null}

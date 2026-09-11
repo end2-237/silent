@@ -262,7 +262,7 @@ export default function Souvenirs() {
       </header>
 
       {error ? (
-        <p className="note" style={{ color: "var(--ember)" }} role="alert">
+        <p className="note" style={{ color: "var(--accent)" }} role="alert">
           {error}
         </p>
       ) : null}

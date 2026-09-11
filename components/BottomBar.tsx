@@ -7,6 +7,14 @@ import { NAV } from "./Nav";
 
 const IDLE_MS = 3000;
 
+/** Le Cœur occupe le centre, en bouton d'action flottant. */
+const FAB = "/coeur/";
+const BAR = [
+  NAV.find((item) => item.href === "/cartes/")!,
+  NAV.find((item) => item.href === FAB)!,
+  NAV.find((item) => item.href === "/souvenirs/")!,
+];
+
 /**
  * Barre flottante translucide : opacité pleine au toucher, puis retombée à 30 %
  * après 3 s d'inactivité, pour ne jamais voler la scène au moment vécu.
@@ -43,11 +51,13 @@ export default function BottomBar() {
       onFocusCapture={() => setPinned(true)}
       onBlurCapture={() => setPinned(false)}
     >
-      {NAV.map((item) => (
+      {BAR.map((item) => (
         <Link
           key={item.href}
           href={item.href}
-          className={`bottombar__btn${isActive(item.href) ? " is-active" : ""}`}
+          className={`bottombar__btn${item.href === FAB ? " bottombar__btn--fab" : ""}${
+            isActive(item.href) ? " is-active" : ""
+          }`}
           aria-current={isActive(item.href) ? "page" : undefined}
         >
           <span className="bottombar__icon" aria-hidden="true">

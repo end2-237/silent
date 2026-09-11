@@ -6,7 +6,7 @@ import { addSouvenir, newId } from "@/lib/db";
 import { useLocalState } from "@/lib/useLocalState";
 
 const HOLD_MS = 3000;
-const EMBER = "233, 99, 90";
+const GLOW = "194, 31, 224";
 
 interface Point {
   x: number;
@@ -117,9 +117,9 @@ export default function HeartCanvas() {
       active.forEach((point) => {
         const radius = (34 + ratio * 46) * pulse;
         const glow = ctx.createRadialGradient(point.x, point.y, 2, point.x, point.y, radius);
-        glow.addColorStop(0, `rgba(${EMBER}, ${0.5 + ratio * 0.45})`);
-        glow.addColorStop(0.55, `rgba(${EMBER}, ${0.14 + ratio * 0.2})`);
-        glow.addColorStop(1, `rgba(${EMBER}, 0)`);
+        glow.addColorStop(0, `rgba(${GLOW}, ${0.5 + ratio * 0.45})`);
+        glow.addColorStop(0.55, `rgba(${GLOW}, ${0.14 + ratio * 0.2})`);
+        glow.addColorStop(1, `rgba(${GLOW}, 0)`);
         ctx.fillStyle = glow;
         ctx.beginPath();
         ctx.arc(point.x, point.y, radius, 0, Math.PI * 2);
@@ -129,7 +129,7 @@ export default function HeartCanvas() {
       // Fil tendu entre les deux mains.
       if (active.size >= 2) {
         const [a, b] = Array.from(active.values());
-        ctx.strokeStyle = `rgba(${EMBER}, ${0.16 + ratio * 0.34})`;
+        ctx.strokeStyle = `rgba(${GLOW}, ${0.16 + ratio * 0.34})`;
         ctx.lineWidth = 1 + ratio * 2;
         ctx.beginPath();
         ctx.moveTo(a.x, a.y);
@@ -212,7 +212,7 @@ export default function HeartCanvas() {
             cy="20"
             r="15"
             fill="none"
-            stroke={`rgb(${EMBER})`}
+            stroke={`rgb(${GLOW})`}
             strokeWidth="2.5"
             strokeLinecap="round"
             strokeDasharray={circumference}
@@ -251,7 +251,7 @@ export default function HeartCanvas() {
             Refermer la question
           </button>
         ) : null}
-        {saved ? <span className="tag tag--ember">Empreinte ajoutée aux souvenirs</span> : null}
+        {saved ? <span className="tag tag--accent">Empreinte ajoutée aux souvenirs</span> : null}
       </div>
 
       {unlocked.value ? (

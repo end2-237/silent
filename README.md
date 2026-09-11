@@ -29,6 +29,23 @@ Mobile et tablette : barre flottante translucide à 3 boutons, opaque au toucher
 Ordinateur : navigation haute avec raccourcis clavier `1` à `4`, mise en page deux colonnes,
 glisser-déposer des souvenirs, et un seul contact suffit pour l'empreinte (maintenir le clic).
 
+## Identité visuelle
+
+Fond quasi noir bleuté, halos magenta et violet en arrière-plan, bandeaux en dégradé
+indigo → violet → magenta, cartes largement arrondies, sous-titres en capitales espacées et champs
+clairs à icône. La barre flottante place le Cœur au centre, en bouton d'action surélevé.
+
+| Rôle | Valeur |
+| --- | --- |
+| Fond | `#0a0a0f` → `#14141d` |
+| Accent | `#c21fe0` (magenta) |
+| Accent secondaire | `#7a4dff` (violet) |
+| Dégradé | `#241a63` → `#6a2bd9` → `#c21fe0` |
+| Texte | `#f2f1f6`, secondaire `#9a97ad` |
+
+Les éléments d'arrière-plan (halos flous animés, trame fine, grain) sont purement décoratifs,
+inertes au clic, et immobiles si le système demande moins d'animations.
+
 ## Vie privée
 
 Rien ne quitte l'appareil : les photos et vidéos vivent dans IndexedDB, les notes et le chronomètre

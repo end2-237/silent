@@ -8,7 +8,7 @@ import { SIGNS, SPECIAL_RULES, type Sign } from "@/lib/data";
 
 /** Deux couleurs de dos, comme deux jeux posés côte à côte. */
 function backColor(id: number): string {
-  return id % 2 === 1 ? "var(--ember)" : "var(--indigo)";
+  return id % 2 === 1 ? "var(--accent)" : "var(--indigo)";
 }
 
 function Corner({ sign, flip }: { sign: Sign; flip?: boolean }) {
@@ -74,7 +74,7 @@ export default function Cards() {
 
       <div className="cards-layout">
         {/* La couleur du dos suit la parité de la carte, comme deux jeux mêlés. */}
-        <div style={{ color: backColor(sign.id) }}>
+        <div className="hero-glow" style={{ color: backColor(sign.id) }}>
           <Card3D
             size="hero"
             className="card3d--paper"
@@ -88,7 +88,7 @@ export default function Cards() {
 
         <div className="cards-side">
           <div className="row">
-            <span className="tag tag--ember">{sign.meaning}</span>
+            <span className="tag tag--accent">{sign.meaning}</span>
             <span className="tag">{sign.purpose}</span>
           </div>
 
@@ -144,7 +144,7 @@ export default function Cards() {
               <div>
                 <div className="rule__label">{rule.label}</div>
                 <div className="rule__text">{rule.rule}</div>
-                <div className="rule__text" style={{ color: "var(--ember)" }}>
+                <div className="rule__text" style={{ color: "var(--accent)" }}>
                   {rule.detail}
                 </div>
               </div>

@@ -143,32 +143,32 @@ export async function buildMontage(souvenirs: Souvenir[], options: MontageOption
 
   // Fond nuit.
   const bg = ctx.createLinearGradient(0, 0, W, H);
-  bg.addColorStop(0, "#0b0e18");
-  bg.addColorStop(0.55, "#06070b");
-  bg.addColorStop(1, "#120b10");
+  bg.addColorStop(0, "#241a63");
+  bg.addColorStop(0.55, "#0a0a0f");
+  bg.addColorStop(1, "#2a0f3a");
   ctx.fillStyle = bg;
   ctx.fillRect(0, 0, W, H);
 
   const halo = ctx.createRadialGradient(W / 2, 250, 40, W / 2, 250, 720);
-  halo.addColorStop(0, "rgba(233,99,90,0.20)");
-  halo.addColorStop(1, "rgba(233,99,90,0)");
+  halo.addColorStop(0, "rgba(194,31,224,0.28)");
+  halo.addColorStop(1, "rgba(194,31,224,0)");
   ctx.fillStyle = halo;
   ctx.fillRect(0, 0, W, 900);
 
   // En-tête.
   ctx.textAlign = "center";
-  ctx.fillStyle = "#ecece8";
+  ctx.fillStyle = "#f2f1f6";
   ctx.font = `600 96px ${SANS}`;
   ctx.letterSpacing = "26px";
   ctx.fillText("SILENT", W / 2 + 13, 180);
   ctx.letterSpacing = "0px";
 
-  ctx.fillStyle = "rgba(236,236,232,0.62)";
+  ctx.fillStyle = "rgba(242,241,246,0.62)";
   ctx.font = `italic 38px ${SERIF}`;
   ctx.fillText("S'aimer au-delà du bruit", W / 2, 240);
 
   const date = options.date ?? new Date();
-  ctx.fillStyle = "rgba(236,236,232,0.38)";
+  ctx.fillStyle = "rgba(242,241,246,0.38)";
   ctx.font = `26px ${SANS}`;
   ctx.letterSpacing = "6px";
   ctx.fillText(
@@ -201,32 +201,32 @@ export async function buildMontage(souvenirs: Souvenir[], options: MontageOption
       const src = await decode(souvenir);
       if (src) drawCover(ctx, src, x, y, tileW, tileH);
       const shade = ctx.createLinearGradient(0, y + tileH - 190, 0, y + tileH);
-      shade.addColorStop(0, "rgba(6,7,11,0)");
-      shade.addColorStop(1, "rgba(6,7,11,0.92)");
+      shade.addColorStop(0, "rgba(10,10,15,0)");
+      shade.addColorStop(1, "rgba(10,10,15,0.92)");
       ctx.fillStyle = shade;
       ctx.fillRect(x, y + tileH - 190, tileW, 190);
 
       const step = STEPS.find((s) => s.id === souvenir.step);
       ctx.textAlign = "left";
-      ctx.fillStyle = "#e9635a";
+      ctx.fillStyle = "#d856f0";
       ctx.font = `600 22px ${SANS}`;
       ctx.letterSpacing = "4px";
       ctx.fillText(step ? `ÉTAPE ${step.id}` : "EMPREINTE", x + 26, y + tileH - 76);
       ctx.letterSpacing = "0px";
-      ctx.fillStyle = "#ecece8";
+      ctx.fillStyle = "#f2f1f6";
       ctx.font = `500 30px ${SANS}`;
       const title = souvenir.caption || step?.title || "Instant";
       ctx.fillText(wrap(ctx, title, tileW - 52)[0] ?? title, x + 26, y + tileH - 34);
     } else {
       // Emplacement resté vide : on garde la trace de l'étape manquante.
       ctx.setLineDash([10, 12]);
-      ctx.strokeStyle = "rgba(236,236,232,0.16)";
+      ctx.strokeStyle = "rgba(242,241,246,0.16)";
       ctx.lineWidth = 2;
       roundRect(ctx, x + 10, y + 10, tileW - 20, tileH - 20, 22);
       ctx.stroke();
       ctx.setLineDash([]);
       ctx.textAlign = "center";
-      ctx.fillStyle = "rgba(236,236,232,0.30)";
+      ctx.fillStyle = "rgba(242,241,246,0.30)";
       ctx.font = `italic 28px ${SERIF}`;
       ctx.fillText("sans image", x + tileW / 2, y + tileH / 2 + 10);
     }
@@ -236,14 +236,14 @@ export async function buildMontage(souvenirs: Souvenir[], options: MontageOption
   // Pied de planche : la question du cœur.
   const footerTop = top + 3 * (tileH + gap) + 22;
   ctx.textAlign = "center";
-  ctx.strokeStyle = "rgba(236,236,232,0.16)";
+  ctx.strokeStyle = "rgba(242,241,246,0.16)";
   ctx.lineWidth = 1;
   ctx.beginPath();
   ctx.moveTo(margin, footerTop);
   ctx.lineTo(W - margin, footerTop);
   ctx.stroke();
 
-  ctx.fillStyle = "rgba(236,236,232,0.80)";
+  ctx.fillStyle = "rgba(242,241,246,0.80)";
   ctx.font = `italic 32px ${SERIF}`;
   const lines = wrap(ctx, `« ${FINAL_QUESTION} »`, W - margin * 2 - 40).slice(0, 5);
   lines.forEach((line, index) => ctx.fillText(line, W / 2, footerTop + 62 + index * 46));
@@ -251,7 +251,7 @@ export async function buildMontage(souvenirs: Souvenir[], options: MontageOption
   if (options.silenceMinutes && options.silenceMinutes > 0) {
     const h = Math.floor(options.silenceMinutes / 60);
     const m = options.silenceMinutes % 60;
-    ctx.fillStyle = "rgba(236,236,232,0.40)";
+    ctx.fillStyle = "rgba(242,241,246,0.40)";
     ctx.font = `24px ${SANS}`;
     ctx.letterSpacing = "4px";
     ctx.fillText(`SILENCE TENU ${h} H ${String(m).padStart(2, "0")}`.toUpperCase(), W / 2, H - 54);

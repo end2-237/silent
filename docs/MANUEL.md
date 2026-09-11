@@ -77,3 +77,4 @@ Les cinq étapes totalisent 4 h 30 ; la marge de déplacement porte l'expérienc
 | Barre flottante à 3 boutons | Conservée telle quelle sur mobile et tablette ; sur écran ≥ 1040 px elle laisse place à la barre de navigation haute | Sur ordinateur, deux menus identiques se dupliqueraient ; la barre reste le geste du pouce, le menu haut le geste de la souris. |
 | « Montage récapitulatif » | Planche JPEG 1080 × 1920 assemblée dans un canvas (6 vignettes + question finale) | Un montage vidéo exigerait un encodage lourd et fragile en navigateur ; la planche s'enregistre et se partage partout. |
 | Empreinte haptique simultanée | 2 contacts sur écran tactile, 1 seul à la souris | Un ordinateur n'a qu'un pointeur : le rituel reste testable sur PC. |
+| « 3 boutons essentiels » | Cartes et Souvenirs encadrent le Cœur, placé au centre en bouton flottant surélevé | Reprend la barre des maquettes de référence, où l'action principale occupe le centre. |

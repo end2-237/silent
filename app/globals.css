@@ -4,29 +4,34 @@
    ========================================================================== */
 
 :root {
-  --bg: #06070b;
-  --bg-2: #0b0e18;
-  --panel: rgba(255, 255, 255, 0.045);
-  --panel-2: rgba(255, 255, 255, 0.08);
-  --line: rgba(236, 236, 232, 0.1);
-  --line-strong: rgba(236, 236, 232, 0.2);
-  --ink: #ecece8;
-  --muted: #98a0b0;
-  --ember: #e9635a;
-  --ember-soft: rgba(233, 99, 90, 0.14);
-  --silver: #6c7a8c;
-  --indigo: #4a6bd6;
+  --bg: #0a0a0f;
+  --bg-2: #14141d;
+  --panel: rgba(255, 255, 255, 0.05);
+  --panel-2: rgba(255, 255, 255, 0.09);
+  --line: rgba(242, 241, 246, 0.1);
+  --line-strong: rgba(242, 241, 246, 0.22);
+  --ink: #f2f1f6;
+  --muted: #9a97ad;
+
+  /* Magenta et violet : l'identité Swift Minis. */
+  --accent: #c21fe0;
+  --accent-2: #7a4dff;
+  --accent-soft: rgba(194, 31, 224, 0.16);
+  --indigo: #6d4aff;
+  --silver: #7d7a91;
+
+  --gradient: linear-gradient(150deg, #241a63 0%, #6a2bd9 48%, #c21fe0 100%);
 
   --sans: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
   --serif: Georgia, "Times New Roman", serif;
 
-  --r-s: 10px;
-  --r-m: 16px;
-  --r-l: 26px;
+  --r-s: 12px;
+  --r-m: 18px;
+  --r-l: 28px;
 
   --topbar-h: 60px;
   --page-x: 20px;
-  --shadow: 0 20px 60px rgba(0, 0, 0, 0.55);
+  --shadow: 0 20px 60px rgba(0, 0, 0, 0.6);
 }
 
 * {
@@ -50,10 +55,7 @@ body {
   font-family: var(--sans);
   font-size: 16px;
   line-height: 1.55;
-  background:
-    radial-gradient(120% 80% at 50% -10%, rgba(233, 99, 90, 0.12), transparent 60%),
-    radial-gradient(90% 60% at 10% 110%, rgba(108, 122, 140, 0.12), transparent 60%),
-    linear-gradient(180deg, var(--bg-2), var(--bg) 40%);
+  background: linear-gradient(180deg, var(--bg-2), var(--bg) 42%);
   background-attachment: fixed;
   overscroll-behavior-y: none;
 }
@@ -83,7 +85,7 @@ textarea {
 }
 
 :focus-visible {
-  outline: 2px solid var(--ember);
+  outline: 2px solid var(--accent);
   outline-offset: 3px;
   border-radius: 6px;
 }
@@ -106,7 +108,7 @@ textarea {
   top: 8px;
   z-index: 50;
   padding: 10px 16px;
-  background: var(--ember);
+  background: var(--accent);
   color: #fff;
   border-radius: var(--r-s);
 }
@@ -133,7 +135,7 @@ textarea {
   padding: 0 var(--page-x);
   padding-top: env(safe-area-inset-top);
   border-bottom: 1px solid var(--line);
-  background: rgba(6, 7, 11, 0.72);
+  background: rgba(10, 10, 15, 0.72);
   backdrop-filter: blur(14px);
   -webkit-backdrop-filter: blur(14px);
 }
@@ -152,8 +154,8 @@ textarea {
   width: 9px;
   height: 9px;
   border-radius: 50%;
-  background: var(--ember);
-  box-shadow: 0 0 0 4px var(--ember-soft);
+  background: linear-gradient(120deg, var(--accent-2), var(--accent));
+  box-shadow: 0 0 0 4px var(--accent-soft);
 }
 
 .topbar__tagline {
@@ -189,7 +191,7 @@ textarea {
   color: var(--ink);
 }
 .topnav__link.is-active {
-  background: var(--ember-soft);
+  background: var(--accent-soft);
   color: var(--ink);
 }
 .topnav__icon {
@@ -225,7 +227,7 @@ textarea {
   padding: 7px;
   border-radius: 999px;
   border: 1px solid var(--line);
-  background: rgba(12, 14, 22, 0.72);
+  background: rgba(20, 20, 29, 0.74);
   backdrop-filter: blur(18px) saturate(140%);
   -webkit-backdrop-filter: blur(18px) saturate(140%);
   box-shadow: var(--shadow);
@@ -254,7 +256,7 @@ textarea {
   background: var(--panel);
 }
 .bottombar__btn.is-active {
-  background: var(--ember-soft);
+  background: var(--accent-soft);
   color: var(--ink);
 }
 .bottombar__icon {
@@ -272,7 +274,7 @@ textarea {
   font-size: 0.7rem;
   letter-spacing: 0.32em;
   text-transform: uppercase;
-  color: var(--ember);
+  color: var(--accent);
   margin-bottom: 12px;
 }
 .page-head h1 {
@@ -318,10 +320,11 @@ textarea {
   padding: 11px 18px;
   border-radius: 999px;
   border: 1px solid transparent;
-  background: var(--ember);
+  background: linear-gradient(120deg, var(--accent-2), var(--accent));
   color: #fff;
   font-size: 0.9rem;
   font-weight: 500;
+  box-shadow: 0 10px 24px rgba(194, 31, 224, 0.28);
   cursor: pointer;
   transition: filter 0.2s ease, background 0.2s ease, border-color 0.2s ease;
 }
@@ -334,8 +337,9 @@ textarea {
 }
 .btn--ghost {
   background: transparent;
-  border-color: var(--line-strong);
+  border-color: rgba(194, 31, 224, 0.5);
   color: var(--ink);
+  box-shadow: none;
 }
 .btn--ghost:hover:not(:disabled) {
   background: var(--panel);
@@ -345,9 +349,10 @@ textarea {
   border-color: transparent;
   color: var(--muted);
   padding: 8px 10px;
+  box-shadow: none;
 }
 .btn--quiet:hover:not(:disabled) {
-  color: var(--ember);
+  color: var(--accent);
 }
 .btn--block {
   width: 100%;
@@ -370,10 +375,10 @@ textarea {
   font-size: 0.74rem;
   color: var(--muted);
 }
-.tag--ember {
-  color: var(--ember);
-  border-color: rgba(233, 99, 90, 0.35);
-  background: var(--ember-soft);
+.tag--accent {
+  color: var(--accent);
+  border-color: rgba(194, 31, 224, 0.45);
+  background: var(--accent-soft);
 }
 
 .quote {
@@ -439,7 +444,7 @@ textarea {
 }
 .card3d__face--back {
   transform: rotateY(180deg);
-  background: linear-gradient(160deg, rgba(233, 99, 90, 0.2), rgba(255, 255, 255, 0.03));
+  background: linear-gradient(160deg, rgba(194, 31, 224, 0.24), rgba(255, 255, 255, 0.03));
 }
 .card3d--hero .card3d__face {
   padding: 24px;
@@ -453,7 +458,7 @@ textarea {
 .cardface__num {
   font-size: 0.7rem;
   letter-spacing: 0.3em;
-  color: var(--ember);
+  color: var(--accent);
   text-transform: uppercase;
 }
 .cardface__hand {
@@ -555,7 +560,7 @@ textarea {
 }
 .progress__fill {
   height: 100%;
-  background: var(--ember);
+  background: linear-gradient(90deg, var(--accent-2), var(--accent));
   transition: width 0.4s ease;
 }
 
@@ -571,7 +576,7 @@ textarea {
   overflow: hidden;
 }
 .step.is-done {
-  border-color: rgba(233, 99, 90, 0.32);
+  border-color: rgba(194, 31, 224, 0.38);
 }
 .step__head {
   display: flex;
@@ -596,8 +601,8 @@ textarea {
   color: var(--muted);
 }
 .step.is-done .step__num {
-  background: var(--ember);
-  border-color: var(--ember);
+  background: linear-gradient(120deg, var(--accent-2), var(--accent));
+  border-color: transparent;
   color: #fff;
 }
 .step__title {
@@ -650,8 +655,8 @@ textarea {
   transform: translateY(-2px);
 }
 .joker-dot.is-used {
-  background: var(--ember-soft);
-  border-color: rgba(233, 99, 90, 0.4);
+  background: var(--accent-soft);
+  border-color: rgba(194, 31, 224, 0.45);
   opacity: 0.55;
 }
 
@@ -759,6 +764,7 @@ tfoot td {
 }
 .capture__count {
   margin-left: auto;
+  white-space: nowrap;
   font-size: 0.74rem;
   color: var(--silver);
 }
@@ -791,14 +797,14 @@ tfoot td {
   height: 26px;
   border-radius: 50%;
   border: 0;
-  background: rgba(6, 7, 11, 0.75);
+  background: rgba(10, 10, 15, 0.75);
   color: var(--ink);
   cursor: pointer;
   font-size: 0.8rem;
   line-height: 1;
 }
 .thumb__del:hover {
-  background: var(--ember);
+  background: var(--accent);
   color: #fff;
 }
 .thumb__badge {
@@ -808,7 +814,7 @@ tfoot td {
   font-size: 0.64rem;
   padding: 2px 7px;
   border-radius: 999px;
-  background: rgba(6, 7, 11, 0.78);
+  background: rgba(10, 10, 15, 0.78);
   color: var(--muted);
 }
 
@@ -828,9 +834,9 @@ tfoot td {
 }
 .dropzone:hover,
 .dropzone.is-over {
-  border-color: var(--ember);
+  border-color: var(--accent);
   color: var(--ink);
-  background: var(--ember-soft);
+  background: var(--accent-soft);
 }
 .dropzone__plus {
   font-size: 1.3rem;
@@ -854,7 +860,7 @@ tfoot td {
   border-radius: var(--r-l);
   border: 1px solid var(--line);
   overflow: hidden;
-  background: radial-gradient(70% 60% at 50% 45%, rgba(233, 99, 90, 0.1), rgba(6, 7, 11, 0.9));
+  background: radial-gradient(70% 60% at 50% 45%, rgba(194, 31, 224, 0.14), rgba(10, 10, 15, 0.9));
   touch-action: none;
   cursor: crosshair;
 }
@@ -883,8 +889,8 @@ tfoot td {
 }
 
 .reveal {
-  border: 1px solid rgba(233, 99, 90, 0.35);
-  background: linear-gradient(160deg, rgba(233, 99, 90, 0.16), rgba(255, 255, 255, 0.03));
+  border: 1px solid rgba(194, 31, 224, 0.45);
+  background: linear-gradient(160deg, rgba(194, 31, 224, 0.2), rgba(255, 255, 255, 0.03));
   border-radius: var(--r-l);
   padding: 24px;
   animation: rise 0.8s ease both;
@@ -966,8 +972,8 @@ tfoot td {
   font-variant-numeric: tabular-nums;
 }
 .counter.is-over {
-  color: var(--ember);
-  border-color: rgba(233, 99, 90, 0.45);
+  color: var(--accent);
+  border-color: rgba(194, 31, 224, 0.5);
 }
 
 /* Le dépôt de souvenir est un <button> : on neutralise le fond natif. */
@@ -1070,7 +1076,7 @@ tfoot td {
   gap: 4px;
   color: var(--ink);
   background: linear-gradient(160deg, rgba(255, 255, 255, 0.1), rgba(255, 255, 255, 0.02));
-  border: 1px solid rgba(233, 99, 90, 0.5);
+  border: 1px solid rgba(194, 31, 224, 0.55);
   border-radius: 12px;
 }
 .mini__hand {
@@ -1083,7 +1089,7 @@ tfoot td {
 }
 .mini.is-selected {
   transform: translateY(-6px);
-  box-shadow: 0 14px 30px rgba(233, 99, 90, 0.25);
+  box-shadow: 0 14px 30px rgba(194, 31, 224, 0.3);
 }
 
 /* Index de coin, comme sur une carte à jouer. */
@@ -1095,7 +1101,7 @@ tfoot td {
   flex-direction: column;
   align-items: center;
   gap: 2px;
-  color: var(--ember);
+  color: var(--accent);
   font-size: 0.82rem;
   line-height: 1;
 }
@@ -1216,4 +1222,252 @@ tfoot td {
   .card3d--hero {
     width: min(300px, 68vw);
   }
+}
+
+/* ===================================================================
+   Habillage Swift Minis : bandeau dégradé, champs clairs, bouton
+   flottant central.
+   =================================================================== */
+
+/* Bandeau d'en-tête, comme l'écran d'accueil des maquettes. */
+.banner {
+  position: relative;
+  border-radius: var(--r-l);
+  padding: 26px 24px 28px;
+  margin-bottom: 22px;
+  background: var(--gradient);
+  box-shadow: 0 24px 60px rgba(108, 33, 214, 0.35);
+  overflow: hidden;
+}
+.banner::after {
+  content: "";
+  position: absolute;
+  right: -70px;
+  top: -90px;
+  width: 240px;
+  height: 240px;
+  border-radius: 50%;
+  background: radial-gradient(circle, rgba(255, 255, 255, 0.22), transparent 62%);
+  pointer-events: none;
+}
+.banner .page-head {
+  margin: 0;
+  position: relative;
+  z-index: 1;
+}
+.banner .page-head__kicker {
+  color: rgba(255, 255, 255, 0.82);
+}
+.banner .page-head p {
+  color: rgba(255, 255, 255, 0.82);
+}
+.banner__meta {
+  position: relative;
+  z-index: 1;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-top: 16px;
+}
+.banner__meta .tag {
+  border-color: rgba(255, 255, 255, 0.35);
+  background: rgba(255, 255, 255, 0.12);
+  color: #fff;
+}
+
+/* Sous-titre en capitales espacées, signature typographique des écrans. */
+.page-head__sub {
+  display: block;
+  margin-top: 10px;
+  font-size: 0.76rem;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--muted);
+}
+.banner .page-head__sub {
+  color: rgba(255, 255, 255, 0.78);
+}
+
+/* Champs clairs à icône, repris des écrans de connexion. */
+.field {
+  align-items: center;
+}
+.input-wrap {
+  position: relative;
+  flex: 1;
+  min-width: 0;
+  display: flex;
+  align-items: center;
+}
+.input-wrap__icon {
+  position: absolute;
+  left: 14px;
+  display: grid;
+  place-items: center;
+  width: 26px;
+  height: 26px;
+  border-radius: 50%;
+  background: rgba(194, 31, 224, 0.12);
+  color: var(--accent);
+  font-size: 0.8rem;
+  pointer-events: none;
+}
+.input-wrap .input {
+  width: 100%;
+  padding-left: 50px;
+  background: #fdfcff;
+  color: #16161d;
+  border-color: transparent;
+}
+.input-wrap .input::placeholder {
+  color: #9a97ad;
+}
+.input-wrap .input:focus-visible {
+  outline-color: var(--accent);
+}
+
+/* Barre flottante : le Cœur devient le bouton d'action central. */
+.bottombar__btn--fab {
+  width: 62px;
+  height: 62px;
+  padding: 0;
+  justify-content: center;
+  border-radius: 50%;
+  background: linear-gradient(140deg, var(--accent-2), var(--accent));
+  color: #fff;
+  transform: translateY(-16px);
+  box-shadow: 0 14px 30px rgba(194, 31, 224, 0.45);
+}
+.bottombar__btn--fab:hover {
+  background: linear-gradient(140deg, var(--accent-2), var(--accent));
+  color: #fff;
+  filter: brightness(1.08);
+}
+.bottombar__btn--fab.is-active {
+  outline: 2px solid rgba(255, 255, 255, 0.55);
+  outline-offset: 2px;
+}
+.bottombar__btn--fab .bottombar__icon {
+  font-size: 1.5rem;
+}
+.bottombar__btn--fab .bottombar__label {
+  display: none;
+}
+.bottombar {
+  align-items: center;
+  padding: 8px 10px;
+}
+
+/* Cartes d'étape : coins plus ronds et halo au survol, comme les
+   vignettes d'événement des maquettes. */
+.step,
+.capture,
+.panel {
+  transition: border-color 0.25s ease, transform 0.25s ease;
+}
+.step:hover,
+.capture:hover {
+  border-color: rgba(194, 31, 224, 0.32);
+}
+
+/* ------------------------------------------------ éléments d'arrière-plan */
+
+.backdrop {
+  position: fixed;
+  inset: 0;
+  z-index: 0;
+  overflow: hidden;
+  pointer-events: none;
+}
+.main,
+.topbar {
+  position: relative;
+  z-index: 1;
+}
+.topbar {
+  position: sticky;
+}
+
+.backdrop__orb {
+  position: absolute;
+  border-radius: 50%;
+  filter: blur(110px);
+  opacity: 0.32;
+  will-change: transform;
+}
+.backdrop__orb--magenta {
+  width: 46vmax;
+  height: 46vmax;
+  top: -24vmax;
+  right: -20vmax;
+  background: radial-gradient(circle, rgba(194, 31, 224, 0.55), transparent 68%);
+  animation: drift 26s ease-in-out infinite;
+}
+.backdrop__orb--violet {
+  width: 38vmax;
+  height: 38vmax;
+  bottom: -14vmax;
+  left: -12vmax;
+  background: radial-gradient(circle, rgba(122, 77, 255, 0.45), transparent 68%);
+  animation: drift 32s ease-in-out infinite reverse;
+}
+.backdrop__orb--indigo {
+  width: 34vmax;
+  height: 34vmax;
+  top: 30%;
+  left: 52%;
+  opacity: 0.5;
+  background: radial-gradient(circle, rgba(36, 26, 99, 0.65), transparent 70%);
+  animation: drift 40s ease-in-out infinite;
+}
+
+/* Trame discrète, comme le quadrillage des planches de maquettes. */
+.backdrop__grid {
+  position: absolute;
+  inset: 0;
+  background-image:
+    linear-gradient(rgba(255, 255, 255, 0.028) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(255, 255, 255, 0.028) 1px, transparent 1px);
+  background-size: 68px 68px;
+  mask-image: radial-gradient(80% 60% at 50% 25%, #000 20%, transparent 78%);
+  -webkit-mask-image: radial-gradient(80% 60% at 50% 25%, #000 20%, transparent 78%);
+}
+
+/* Grain fin : casse les aplats du dégradé sur grand écran. */
+.backdrop__grain {
+  position: absolute;
+  inset: -50%;
+  opacity: 0.035;
+  background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='140' height='140'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='3'/></filter><rect width='140' height='140' filter='url(%23n)'/></svg>");
+}
+
+@keyframes drift {
+  0%,
+  100% {
+    transform: translate3d(0, 0, 0) scale(1);
+  }
+  50% {
+    transform: translate3d(-4%, 5%, 0) scale(1.12);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .backdrop__orb {
+    animation: none;
+  }
+}
+
+/* Halo coloré derrière la carte mise en avant. */
+.hero-glow {
+  position: relative;
+}
+.hero-glow::before {
+  content: "";
+  position: absolute;
+  inset: -12% -18%;
+  border-radius: 50%;
+  background: radial-gradient(circle, currentColor, transparent 62%);
+  opacity: 0.28;
+  filter: blur(46px);
+  pointer-events: none;
 }

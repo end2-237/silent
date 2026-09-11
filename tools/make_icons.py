@@ -11,11 +11,11 @@ import zlib
 
 OUT = os.path.join(os.path.dirname(os.path.dirname(os.path.abspath(__file__))), "public", "icons")
 
-BG_EDGE = (5, 6, 11)
-BG_CORE = (18, 21, 32)
-HEART_TOP = (241, 122, 108)
-HEART_BOTTOM = (196, 72, 92)
-RING = (108, 122, 140)
+BG_EDGE = (10, 10, 15)
+BG_CORE = (36, 26, 99)
+HEART_TOP = (216, 86, 240)
+HEART_BOTTOM = (122, 77, 255)
+RING = (194, 31, 224)
 
 
 def lerp(a, b, t):
@@ -45,7 +45,7 @@ def sample(px, py, size, scale, ring):
     if ring:
         d = abs(r - 0.80)
         if d < 0.013:
-            col = over(col, RING, 0.30 * (1 - d / 0.013))
+            col = over(col, RING, 0.45 * (1 - d / 0.013))
 
     # Cœur.
     hx, hy = u / scale, (v - 0.06) / scale

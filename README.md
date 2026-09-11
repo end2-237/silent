@@ -85,6 +85,27 @@ npm run build && npx serve out
 
 L'application est exportée en statique (`output: "export"`), donc hébergeable partout.
 
+### Docker (Coolify, Dokku, Portainer, VPS…)
+
+Le dépôt contient un `Dockerfile` en deux étapes : Node 22 compile l'export, puis nginx 1.27 sert
+`out/`. L'image finale ne contient ni Node ni `node_modules`.
+
+```bash
+docker build -t silent .
+docker run --rm -p 8080:80 silent   # http://localhost:8080
+```
+
+**Sur Coolify**, choisir le build pack **Dockerfile** (et non Nixpacks) dans
+*Configuration → General*, et exposer le port **80**. Nixpacks échoue sur les petites machines :
+l'installation de l'environnement nix dépasse largement le délai de build, avant même d'avoir
+installé les dépendances npm.
+
+La configuration nginx (`docker/nginx.conf`) sert les routes exportées en dossiers
+(`/cartes/index.html`), interdit la mise en cache de `sw.js` — sinon une ancienne version reste
+collée sur les appareils installés — et met les fichiers hachés de `_next/static` en cache long.
+
+### Autres hébergeurs
+
 - **Vercel / Netlify / tout hébergeur statique** : servir le dossier `out/`.
 - **Sous-dossier** (GitHub Pages par exemple) : renseigner le chemin de base au build.
 

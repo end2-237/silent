@@ -66,7 +66,9 @@ export default function AppShell({ children }: { children: React.ReactNode }) {
 
       <header className="topbar">
         <Link href={HOME.href} className="wordmark" aria-label="SILENT — accueil du rituel">
-          <span className="wordmark__dot" aria-hidden="true" />
+          {/* Marque : la silhouette du couple, servie en PNG déjà composé. */}
+          {/* eslint-disable-next-line @next/next/no-img-element */}
+          <img className="wordmark__mark" src={`${BASE}/icons/mark-128.png`} alt="" width={30} height={30} />
           <span className="wordmark__text">SILENT</span>
         </Link>
 

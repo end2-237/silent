@@ -1,12 +1,13 @@
 "use client";
 
 import { useCallback, useEffect, useRef, useState } from "react";
+import Echoes from "./Echoes";
 import { FINAL_QUESTION } from "@/lib/data";
 import { addSouvenir, newId } from "@/lib/db";
 import { useLocalState } from "@/lib/useLocalState";
 
 const HOLD_MS = 3000;
-const GLOW = "194, 31, 224";
+const GLOW = "255, 90, 46";
 
 interface Point {
   x: number;
@@ -92,7 +93,7 @@ export default function HeartCanvas() {
       // Estompe la traînée en retirant de l'alpha : le canvas reste
       // transparent et laisse voir le halo du fond.
       ctx.globalCompositeOperation = "destination-out";
-      ctx.fillStyle = "rgba(0, 0, 0, 0.04)";
+      ctx.fillStyle = "rgba(0, 0, 0, 0.035)";
       ctx.fillRect(0, 0, rect.width, rect.height);
       ctx.globalCompositeOperation = "source-over";
 
@@ -206,7 +207,7 @@ export default function HeartCanvas() {
           </div>
         ) : null}
         <svg className="canvas-stage__ring" width="40" height="40" viewBox="0 0 40 40" aria-hidden="true">
-          <circle cx="20" cy="20" r="15" fill="none" stroke="rgba(236,236,232,0.16)" strokeWidth="2.5" />
+          <circle cx="20" cy="20" r="15" fill="none" stroke="rgba(58,34,24,0.18)" strokeWidth="2.5" />
           <circle
             cx="20"
             cy="20"
@@ -253,6 +254,8 @@ export default function HeartCanvas() {
         ) : null}
         {saved ? <span className="tag tag--accent">Empreinte ajoutée aux souvenirs</span> : null}
       </div>
+
+      <Echoes />
 
       {unlocked.value ? (
         <section className="reveal" style={{ marginTop: 22 }}>

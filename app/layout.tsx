@@ -13,9 +13,10 @@ export const metadata: Metadata = {
     "Compagnon du rituel SILENT : une journée d'immersion à deux en communication non-verbale restreinte. Cartes des signes, souvenirs et question du cœur.",
   applicationName: "SILENT",
   manifest: `${BASE}/manifest.webmanifest`,
-  appleWebApp: { capable: true, title: "SILENT", statusBarStyle: "black-translucent" },
+  appleWebApp: { capable: true, title: "SILENT", statusBarStyle: "default" },
   icons: {
     icon: [
+      { url: `${BASE}/icons/favicon-32.png`, sizes: "32x32", type: "image/png" },
       { url: `${BASE}/icons/icon-192.png`, sizes: "192x192", type: "image/png" },
       { url: `${BASE}/icons/icon-512.png`, sizes: "512x512", type: "image/png" },
     ],
@@ -25,8 +26,8 @@ export const metadata: Metadata = {
 };
 
 export const viewport: Viewport = {
-  themeColor: "#0a0a0f",
-  colorScheme: "dark",
+  themeColor: "#fdf6f0",
+  colorScheme: "light",
   width: "device-width",
   initialScale: 1,
   viewportFit: "cover",

@@ -20,6 +20,10 @@ Le manuel complet de l'expérience (vision, règles, déroulement, budget) est d
   assemblée en planche récapitulative 1080 × 1920 à enregistrer ou partager.
 - **❤️ Cœur / Canvas** — deux mains posées ensemble trois secondes : vibration, empreinte gardée
   dans les souvenirs, et révélation de la question du cœur.
+- **Les échos** (sur l'écran Cœur) — chacun note les cinq activités de son côté ; les notes de
+  l'autre restent scellées tant qu'on ne les a pas demandées, et la demande ne se fait pas avec
+  « montre-moi » mais avec une phrase : « J'ai été ébloui par le moment » ou « J'ai entendu ton
+  cœur battre ». L'autre ouvre alors ses notes.
 
 ### Sur mobile et sur ordinateur
 
@@ -31,17 +35,21 @@ glisser-déposer des souvenirs, et un seul contact suffit pour l'empreinte (main
 
 ## Identité visuelle
 
-Fond quasi noir bleuté, halos magenta et violet en arrière-plan, bandeaux en dégradé
-indigo → violet → magenta, cartes largement arrondies, sous-titres en capitales espacées et champs
-clairs à icône. La barre flottante place le Cœur au centre, en bouton d'action surélevé.
+Crème et corail : une journée d'amour, pas une veillée. Fond chaud clair, bandeaux en dégradé
+ambre → corail, cartes blanches largement arrondies, sous-titres en capitales espacées, champs
+clairs. La barre flottante place le Cœur au centre, en bouton d'action surélevé.
 
 | Rôle | Valeur |
 | --- | --- |
-| Fond | `#0a0a0f` → `#14141d` |
-| Accent | `#c21fe0` (magenta) |
-| Accent secondaire | `#7a4dff` (violet) |
-| Dégradé | `#241a63` → `#6a2bd9` → `#c21fe0` |
-| Texte | `#f2f1f6`, secondaire `#9a97ad` |
+| Fond | `#fdf6f0` → `#f8e7db` |
+| Accent | `#ff5a2e` (corail) |
+| Accent secondaire | `#ffa65c` (ambre) |
+| Dégradé | `#ffc79a` → `#ff7a45` → `#e8411b` |
+| Texte | `#2b1a13`, secondaire `#8a6c5e` |
+
+La marque est la silhouette d'un couple enlacé, détourée et centrée sur un carré arrondi en
+dégradé — voir `tools/assets/CREDITS.md` pour la source et la licence, et
+`python3 tools/make_icons.py` pour régénérer icônes, favicon et logo d'en-tête.
 
 Les éléments d'arrière-plan (halos flous animés, trame fine, grain) sont purement décoratifs,
 inertes au clic, et immobiles si le système demande moins d'animations.
@@ -64,7 +72,7 @@ npm run dev      # http://localhost:3000
 | `npm run build` | Export statique dans `out/` |
 | `npm run lint` | ESLint (config Next 16) |
 | `npm run typecheck` | TypeScript sans émission |
-| `npm run icons` | Régénère les icônes PNG (`tools/make_icons.py`, sans dépendance) |
+| `npm run icons` | Régénère la marque et les icônes PNG (`tools/make_icons.py`, Pillow requis) |
 
 Le service worker n'est enregistré qu'en production : pour tester le hors-ligne et l'installation,
 utilisez `npm run build` puis servez `out/` en HTTP(S).

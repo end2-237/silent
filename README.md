@@ -85,7 +85,21 @@ npm run build && npx serve out
 
 L'application est exportée en statique (`output: "export"`), donc hébergeable partout.
 
-### Docker (Coolify, Dokku, Portainer, VPS…)
+### Image prête à l'emploi (recommandé)
+
+`.github/workflows/image.yml` compile l'image sur les machines de GitHub à chaque poussée sur
+`main` et la publie sur `ghcr.io/end2-237/silent:latest`. Le serveur de déploiement ne compile
+plus rien : il tire environ **7 Mo** (nginx alpine-slim + le site).
+
+Sur Coolify : créer la ressource en **Docker Image** plutôt qu'en dépôt Git, image
+`ghcr.io/end2-237/silent:latest`, port `80`. Rendre le paquet public dans GitHub
+(*Packages → Package settings → Change visibility*) ou donner à Coolify un identifiant de registre.
+
+Pour redéployer automatiquement après chaque publication, renseigner dans les secrets du dépôt
+`COOLIFY_WEBHOOK` (l'URL de déploiement de la ressource) et `COOLIFY_TOKEN` (un jeton d'API
+Coolify) ; l'étape finale du workflow s'active alors toute seule.
+
+### Construire sur le serveur
 
 Le dépôt contient un `Dockerfile` en deux étapes : Node 22 compile l'export, puis nginx 1.27 sert
 `out/`. L'image finale ne contient ni Node ni `node_modules`.
@@ -100,6 +114,10 @@ docker run --rm -p 8080:80 silent   # http://localhost:8080
 l'installation de l'environnement nix dépasse largement le délai de build, avant même d'avoir
 installé les dépendances npm.
 
+⚠️ Cette voie suppose une bonne liaison vers Docker Hub : `node:22-alpine` pèse 55 Mo, et sur un
+serveur qui télécharge à 66 Ko/s cela représente un quart d'heure. Dans ce cas, préférer l'image
+prête à l'emploi ci-dessus.
+
 #### Combien de temps, et pourquoi
 
 Ce qui est servi est minuscule : **1,2 Mo au total, 51 fichiers**, environ 650 Ko au premier
@@ -111,7 +129,7 @@ binaires natifs de Next (`next` + `@next` = 386 Mo).
 | --- | --- |
 | `npm ci` | ~15 s ici, quelques minutes sur une petite machine |
 | `next build` | ~5 s |
-| Images de base (`node:22-alpine`, `nginx:1.27-alpine`) | ~70 Mo, téléchargées une seule fois |
+| Images de base (`node:22-alpine` 55 Mo, `nginx:1.27-alpine-slim` 5 Mo) | téléchargées une seule fois |
 | Image finale poussée | quelques Mo : ni Node, ni `node_modules` |
 
 La couche `npm ci` est réutilisée telle quelle tant que `package-lock.json` ne change pas : un

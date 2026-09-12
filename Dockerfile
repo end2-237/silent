@@ -1,25 +1,23 @@
-# syntax=docker/dockerfile:1
-
 # ---------------------------------------------------------------- build ---
-# SILENT est exporté en statique : on compile avec Node, puis on ne garde
-# que les fichiers produits. Pas de Nixpacks, pas de nix-env à télécharger.
+# SILENT est exporté en statique : on compile avec Node, puis on ne garde que
+# les fichiers produits. Aucune directive « syntax » ici : elle obligerait le
+# démon à télécharger l'image frontend docker/dockerfile avant de commencer.
 FROM node:22-alpine AS builder
 
 WORKDIR /app
 ENV NEXT_TELEMETRY_DISABLED=1
 
-# Les dépendances d'abord : cette couche est réutilisée telle quelle tant que
-# le verrou ne bouge pas. Le cache npm est monté par BuildKit, pour ne pas
-# retélécharger les paquets quand il bouge.
+# Les dépendances d'abord : couche réutilisée tant que le verrou ne bouge pas.
 COPY package.json package-lock.json ./
-RUN --mount=type=cache,target=/root/.npm \
-    npm ci --no-audit --no-fund --prefer-offline
+RUN npm ci --no-audit --no-fund
 
 COPY . .
 RUN npm run build
 
 # ------------------------------------------------------------------ run ---
-FROM nginx:1.27-alpine AS runner
+# alpine-slim : 5 Mo, sans les modules nginx dont un site statique n'a pas
+# besoin. L'image finale à télécharger pèse donc environ 7 Mo.
+FROM nginx:1.27-alpine-slim AS runner
 
 COPY docker/nginx.conf /etc/nginx/conf.d/default.conf
 COPY --from=builder /app/out /usr/share/nginx/html

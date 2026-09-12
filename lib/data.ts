@@ -2,16 +2,9 @@
 
 export type SignId = 0 | 1 | 2 | 3 | 4 | 5 | 6 | 7;
 
-/** Façon de dessiner la main sur la carte. */
-export type HandVariant = "count" | "fist" | "thumb-up" | "thumb-down";
-
 export interface Sign {
+  /** Sert aussi de nom de fichier : public/hands/<id>.png. */
   id: SignId;
-  /** Nombre de doigts levés, pour la variante « count ». */
-  fingers: number;
-  variant?: HandVariant;
-  /** Doigts écartés en V (signe n°2). */
-  spread?: boolean;
   label: string;
   gesture: string;
   meaning: string;
@@ -23,8 +16,6 @@ export interface Sign {
 export const SIGNS: Sign[] = [
   {
     id: 0,
-    fingers: 0,
-    variant: "fist",
     safety: true,
     label: "Poing fermé",
     gesture: "Poing levé, bras tendu",
@@ -33,7 +24,6 @@ export const SIGNS: Sign[] = [
   },
   {
     id: 1,
-    fingers: 1,
     label: "Un doigt",
     gesture: "Index levé",
     meaning: "Pause / Laisse-moi réfléchir",
@@ -41,8 +31,6 @@ export const SIGNS: Sign[] = [
   },
   {
     id: 2,
-    fingers: 2,
-    spread: true,
     label: "Deux doigts",
     gesture: "Index + majeur en V",
     meaning: "Je ne te comprends pas / Précise",
@@ -50,7 +38,6 @@ export const SIGNS: Sign[] = [
   },
   {
     id: 3,
-    fingers: 3,
     label: "Trois doigts",
     gesture: "Index, majeur, annulaire",
     meaning: "Partage ce moment avec moi",
@@ -58,7 +45,6 @@ export const SIGNS: Sign[] = [
   },
   {
     id: 4,
-    fingers: 4,
     label: "Quatre doigts",
     gesture: "Main levée, pouce replié",
     meaning: "J'ai mal ajusté mon geste / Désolé",
@@ -66,7 +52,6 @@ export const SIGNS: Sign[] = [
   },
   {
     id: 5,
-    fingers: 5,
     label: "Cinq doigts",
     gesture: "Main grande ouverte",
     meaning: "I love you",
@@ -74,8 +59,6 @@ export const SIGNS: Sign[] = [
   },
   {
     id: 6,
-    fingers: 0,
-    variant: "thumb-up",
     label: "Pouce levé",
     gesture: "Poing, pouce vers le haut",
     meaning: "Oui",
@@ -83,8 +66,6 @@ export const SIGNS: Sign[] = [
   },
   {
     id: 7,
-    fingers: 0,
-    variant: "thumb-down",
     label: "Pouce baissé",
     gesture: "Poing, pouce vers le bas",
     meaning: "Non",
@@ -94,7 +75,6 @@ export const SIGNS: Sign[] = [
 
 export interface SpecialRule {
   id: "joker" | "carnet" | "tactile" | "telephone";
-  icon: string;
   label: string;
   rule: string;
   detail: string;
@@ -103,28 +83,24 @@ export interface SpecialRule {
 export const SPECIAL_RULES: SpecialRule[] = [
   {
     id: "joker",
-    icon: "🤍",
     label: "Le Joker Parle",
     rule: "Main posée sur le cœur pendant 3 secondes.",
     detail: "Donne droit à une seule phrase orale de 10 mots maximum.",
   },
   {
     id: "carnet",
-    icon: "✎",
     label: "Le Carnet de Poche",
     rule: "Autorisé pour les pensées plus complexes.",
     detail: "Règle stricte : 3 mots maximum par note.",
   },
   {
     id: "tactile",
-    icon: "✋",
     label: "Le Code Tactile",
     rule: "1 pression sur le poignet = « Je suis là ».",
     detail: "2 pressions = « Regarde-moi ».",
   },
   {
     id: "telephone",
-    icon: "📵",
     label: "Un seul téléphone",
     rule: "Une seule personne le porte, en mode avion.",
     detail: "L'autre n'y touche pas de la journée.",

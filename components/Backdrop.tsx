@@ -7,8 +7,6 @@ export default function Backdrop() {
     <div className="backdrop" aria-hidden="true">
       <span className="backdrop__orb backdrop__orb--magenta" />
       <span className="backdrop__orb backdrop__orb--violet" />
-      <span className="backdrop__orb backdrop__orb--indigo" />
-      <span className="backdrop__grid" />
       <span className="backdrop__grain" />
     </div>
   );

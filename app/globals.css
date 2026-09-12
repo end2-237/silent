@@ -32,6 +32,12 @@
   --topbar-h: 60px;
   --page-x: 20px;
   --shadow: 0 18px 44px rgba(140, 70, 40, 0.14);
+
+  --t-fast: 160ms;
+  --t-mid: 280ms;
+  --t-slow: 850ms;
+  --ease: cubic-bezier(0.22, 1, 0.28, 1);
+  --ease-drop: cubic-bezier(0.19, 1.06, 0.25, 1);
 }
 
 * {
@@ -502,7 +508,7 @@ textarea {
 .minis {
   display: grid;
   grid-template-columns: repeat(4, minmax(0, 1fr));
-  gap: 8px;
+  gap: 10px;
 }
 
 .rules {
@@ -511,21 +517,20 @@ textarea {
   grid-template-columns: 1fr;
 }
 .rule {
-  display: flex;
-  gap: 14px;
-  align-items: flex-start;
+  display: grid;
+  gap: 4px;
+  align-content: start;
   padding: 16px;
   border: 1px solid var(--line);
   border-radius: var(--r-m);
   background: var(--panel);
 }
-.rule__icon {
-  font-size: 1.35rem;
-  line-height: 1.2;
-}
 .rule__label {
-  font-weight: 500;
+  font-weight: 600;
   margin-bottom: 2px;
+}
+.rule__text--accent {
+  color: var(--accent);
 }
 .rule__text {
   font-size: 0.88rem;
@@ -920,7 +925,7 @@ tfoot td {
     --page-x: 32px;
   }
   .rules {
-    grid-template-columns: repeat(3, 1fr);
+    grid-template-columns: repeat(2, 1fr);
   }
   .hero {
     grid-template-columns: 1fr 1fr;
@@ -996,11 +1001,17 @@ tfoot td {
 }
 .cards-side {
   display: grid;
-  gap: 14px;
-  align-content: center;
+  gap: 18px;
+  align-content: start;
 }
-.cards-side .row {
-  justify-content: center;
+.cards-side__meaning {
+  margin: 0;
+  font-family: var(--serif);
+  font-style: italic;
+  font-size: clamp(1.15rem, 3vw, 1.5rem);
+  line-height: 1.35;
+  color: var(--ink);
+  text-align: center;
 }
 
 /* Repères des deux mains sur le canvas. */
@@ -1037,12 +1048,12 @@ tfoot td {
 
 @media (min-width: 1040px) {
   .cards-layout {
-    grid-template-columns: 360px 1fr;
-    gap: 44px;
-    align-items: center;
+    grid-template-columns: 340px 1fr;
+    gap: 48px;
+    align-items: start;
   }
-  .cards-side .row {
-    justify-content: flex-start;
+  .cards-side__meaning {
+    text-align: left;
   }
 }
 
@@ -1051,11 +1062,12 @@ tfoot td {
 .minis {
   display: grid;
   grid-template-columns: repeat(4, minmax(0, 1fr));
-  gap: 8px;
+  gap: 10px;
 }
 
 .mini {
   position: relative;
+  animation: deal 0.5s var(--ease) both;
   padding: 0;
   border: 0;
   background: none;
@@ -1088,8 +1100,10 @@ tfoot td {
   border-radius: 12px;
 }
 .mini__hand {
-  width: 58%;
-  max-height: 56%;
+  height: 58%;
+  width: auto;
+  max-width: 74%;
+  object-fit: contain;
 }
 .mini__num {
   font-size: 0.72rem;
@@ -1103,14 +1117,11 @@ tfoot td {
 /* Index de coin, comme sur une carte à jouer. */
 .pip {
   position: absolute;
-  top: 12px;
-  left: 14px;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: 2px;
+  top: 14px;
+  left: 16px;
   color: var(--accent);
-  font-size: 0.82rem;
+  font-size: 0.9rem;
+  font-weight: 600;
   line-height: 1;
 }
 .pip--flip {
@@ -1119,10 +1130,6 @@ tfoot td {
   bottom: 12px;
   right: 14px;
   transform: rotate(180deg);
-}
-.pip__hand {
-  width: 13px;
-  opacity: 0.85;
 }
 
 /* ------------------------------------------- habillage « carte à jouer » */
@@ -1146,10 +1153,7 @@ tfoot td {
   border-radius: 18px;
   pointer-events: none;
 }
-.card3d--paper .cardface__hand {
-  color: #2b1a13;
-  width: 54%;
-}
+
 .card3d--paper .cardface__label {
   font-family: var(--serif);
   font-size: 1.12rem;
@@ -1223,7 +1227,7 @@ tfoot td {
   color: inherit;
 }
 .card3d--paper .cardface__hand {
-  width: 60%;
+  height: 62%;
 }
 
 @media (max-width: 719px) {
@@ -1648,12 +1652,7 @@ tfoot td {
   }
 }
 
-/* Huit cartes alignées dès qu'il y a la place. */
-@media (min-width: 720px) {
-  .minis {
-    grid-template-columns: repeat(8, minmax(0, 1fr));
-  }
-}
+
 
 /* La carte d'arrêt se repère au premier coup d'œil. */
 .mini.is-safety .mini__back,
@@ -1705,4 +1704,40 @@ tfoot td {
   align-items: baseline;
   gap: 10px;
   flex-wrap: wrap;
+}
+
+
+/* Les cartes se posent l'une après l'autre. */
+@keyframes deal {
+  from {
+    opacity: 0;
+    transform: translateY(14px) rotate(-2deg);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+.minis .mini:nth-child(1) { animation-delay: 0.02s; }
+.minis .mini:nth-child(2) { animation-delay: 0.06s; }
+.minis .mini:nth-child(3) { animation-delay: 0.1s; }
+.minis .mini:nth-child(4) { animation-delay: 0.14s; }
+.minis .mini:nth-child(5) { animation-delay: 0.18s; }
+.minis .mini:nth-child(6) { animation-delay: 0.22s; }
+.minis .mini:nth-child(7) { animation-delay: 0.26s; }
+.minis .mini:nth-child(8) { animation-delay: 0.3s; }
+
+
+/* Sections de page : un rythme unique, jamais une marge improvisée. */
+.section {
+  margin-top: 34px;
+}
+.section__title {
+  font-size: 1.05rem;
+}
+
+@media (min-width: 1040px) {
+  .rules {
+    grid-template-columns: repeat(4, 1fr);
+  }
 }

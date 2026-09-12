@@ -9,4 +9,9 @@
   l'enregistrement de l'image comme marque déposée. En cas de doute, acheter la licence étendue ou
   refaire le tracé.
 
-Les icônes sont régénérées à partir de ce fichier par `python3 tools/make_icons.py` (Pillow).
+- `signes.jfif` — planche des huit signes de la main, fournie par le propriétaire du projet
+  (image générée par Gemini). Elle est découpée en huit illustrations détourées par
+  `python3 tools/slice_hands.py`, qui écrit `public/hands/0.png` à `7.png` : fond supprimé, filets
+  des phalanges laissés en transparence, 440 px de haut, niveaux de gris + alpha.
+
+Les icônes de l'application sont régénérées par `python3 tools/make_icons.py` (Pillow).

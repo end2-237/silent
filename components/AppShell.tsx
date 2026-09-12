@@ -73,7 +73,7 @@ export default function AppShell({ children }: { children: React.ReactNode }) {
         </Link>
 
         <nav className="topnav" aria-label="Navigation">
-          {ROUTES.map((item, index) => (
+          {ROUTES.map((item) => (
             <Link
               key={item.href}
               href={item.href}
@@ -84,9 +84,6 @@ export default function AppShell({ children }: { children: React.ReactNode }) {
                 {item.icon}
               </span>
               {item.label}
-              <kbd className="topnav__kbd" aria-hidden="true">
-                {index + 1}
-              </kbd>
             </Link>
           ))}
         </nav>

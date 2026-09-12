@@ -74,6 +74,7 @@ npm run dev      # http://localhost:3000
 | `npm run lint` | ESLint (config Next 16) |
 | `npm run typecheck` | TypeScript sans émission |
 | `npm run icons` | Régénère la marque et les icônes PNG (`tools/make_icons.py`, Pillow requis) |
+| `npm run hands` | Redécoupe les huit signes depuis la planche (`tools/slice_hands.py`) |
 
 Le service worker n'est enregistré qu'en production : pour tester le hors-ligne et l'installation,
 utilisez `npm run build` puis servez `out/` en HTTP(S).

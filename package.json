@@ -9,7 +9,8 @@
     "start": "node server.mjs",
     "lint": "eslint .",
     "typecheck": "tsc --noEmit",
-    "icons": "python3 tools/make_icons.py"
+    "icons": "python3 tools/make_icons.py",
+    "hands": "python3 tools/slice_hands.py"
   },
   "dependencies": {
     "next": "^16.3.5",

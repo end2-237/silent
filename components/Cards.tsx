@@ -1,6 +1,7 @@
 "use client";
 
 import { useState } from "react";
+import { useLocalState } from "@/lib/useLocalState";
 import Card3D from "./Card3D";
 import CardBack from "./CardBack";
 import HandSign from "./HandSign";
@@ -15,32 +16,19 @@ function backColor(sign: { id: number; safety?: boolean }): string {
 function Corner({ sign, flip }: { sign: Sign; flip?: boolean }) {
   return (
     <span className={`pip${flip ? " pip--flip" : ""}`} aria-hidden="true">
-      <span className="pip__num">{sign.id}</span>
-      <HandSign
-        className="pip__hand"
-        fingers={sign.fingers}
-        variant={sign.variant}
-        spread={sign.spread}
-        title=""
-      />
+      {sign.safety ? "✋" : sign.id}
     </span>
   );
 }
 
-function Front({ sign }: { sign: Sign }) {
+function Front({ sign, hint }: { sign: Sign; hint: boolean }) {
   return (
     <>
       <Corner sign={sign} />
-      <HandSign
-        className="cardface__hand"
-        fingers={sign.fingers}
-        variant={sign.variant}
-        spread={sign.spread}
-        title={sign.label}
-      />
+      <HandSign className="cardface__hand" id={sign.id} label={sign.label} />
       <span className="cardface__label">{sign.label}</span>
       <span className="cardface__gesture">{sign.gesture}</span>
-      <span className="cardface__flip">toucher pour retourner ↻</span>
+      {hint ? <span className="cardface__flip">toucher pour retourner ↻</span> : null}
       <Corner sign={sign} flip />
     </>
   );
@@ -63,11 +51,18 @@ function Back({ sign }: { sign: Sign }) {
 export default function Cards() {
   const [selected, setSelected] = useState<number>(SIGNS[1].id);
   const [flipped, setFlipped] = useState(false);
+  /** L'indice de retournement disparaît une fois le geste compris. */
+  const learned = useLocalState<boolean>("cards-flipped", false);
   const sign = SIGNS.find((item) => item.id === selected) ?? SIGNS[0];
+
+  const flip = (next: boolean) => {
+    setFlipped(next);
+    if (next && !learned.value) learned.setValue(true);
+  };
 
   const select = (id: number) => {
     if (id === selected) {
-      setFlipped((current) => !current);
+      flip(!flipped);
       return;
     }
     setSelected(id);
@@ -77,11 +72,8 @@ export default function Cards() {
   return (
     <>
       <header className="page-head">
-        <span className="page-head__kicker">Module 1 — Cartes</span>
         <h1>Le guide des signes</h1>
-        <p>
-          Huit signes, tout le vocabulaire de la journée. Touchez une carte pour la retourner.
-        </p>
+        <span className="page-head__sub">huit signes, tout le vocabulaire</span>
       </header>
 
       <div className="cards-layout">
@@ -92,17 +84,14 @@ export default function Cards() {
             className={`card3d--paper${sign.safety ? " is-safety" : ""}`}
             label={sign.label}
             flipped={flipped}
-            onFlip={setFlipped}
-            front={<Front sign={sign} />}
+            onFlip={flip}
+            front={<Front sign={sign} hint={!learned.value} />}
             back={<Back sign={sign} />}
           />
         </div>
 
         <div className="cards-side">
-          <div className="row">
-            <span className="tag tag--accent">{sign.meaning}</span>
-            <span className="tag">{sign.purpose}</span>
-          </div>
+          <p className="cards-side__meaning">« {sign.meaning} »</p>
 
           {/* Les cinq miniatures : dos ornementé tant que la carte dort. */}
           <div className="minis">
@@ -120,13 +109,7 @@ export default function Cards() {
                 >
                   {isSelected ? (
                     <span className="mini__face">
-                      <HandSign
-                        className="mini__hand"
-                        fingers={item.fingers}
-                        variant={item.variant}
-                        spread={item.spread}
-                        title=""
-                      />
+                      <HandSign className="mini__hand" id={item.id} />
                       <span className="mini__num">{item.id}</span>
                     </span>
                   ) : (
@@ -137,30 +120,20 @@ export default function Cards() {
             })}
           </div>
 
-          <p className="note" style={{ margin: 0 }}>
-            Sélectionnez une miniature pour l&apos;afficher en grand ; touchez-la à nouveau pour la retourner.
-          </p>
         </div>
       </div>
 
-      <section style={{ marginTop: 30 }}>
+      <section className="section">
         <div className="panel__title">
-          <h2 style={{ fontSize: "1.05rem" }}>Règles spéciales</h2>
+          <h2 className="section__title">Règles spéciales</h2>
           <span className="panel__hint">au-delà des signes</span>
         </div>
         <div className="rules">
           {SPECIAL_RULES.map((rule) => (
             <div className="rule" key={rule.id}>
-              <span className="rule__icon" aria-hidden="true">
-                {rule.icon}
-              </span>
-              <div>
-                <div className="rule__label">{rule.label}</div>
-                <div className="rule__text">{rule.rule}</div>
-                <div className="rule__text" style={{ color: "var(--accent)" }}>
-                  {rule.detail}
-                </div>
-              </div>
+              <div className="rule__label">{rule.label}</div>
+              <div className="rule__text">{rule.rule}</div>
+              <div className="rule__text rule__text--accent">{rule.detail}</div>
             </div>
           ))}
         </div>

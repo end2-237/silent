@@ -11,11 +11,12 @@ Le manuel complet de l'expérience (vision, règles, déroulement, budget) est d
 
 ## Ce que fait l'application
 
-- **Rituel** (accueil) — chronomètre du silence, les 5 étapes dépliables, les 3 jokers avec leur
-  phrase de 10 mots, le carnet de poche limité à 3 mots par note, la grille budgétaire.
-- **🎴 Cartes** — les 5 signes en cartes à jouer : dos ornementé dessiné en SVG, retournement 3D,
-  recto = le geste, verso = l'action et son objectif pédagogique. Plus les règles spéciales
-  (Joker, Carnet, Code Tactile).
+- **Rituel** (accueil) — chronomètre du silence, les 5 étapes dépliables (titre et durée seulement
+  tant qu'on ne les ouvre pas), les 3 jokers avec leur phrase de 10 mots, le carnet de poche limité
+  à 3 mots par note, la grille budgétaire repliée.
+- **🎴 Cartes** — les 8 signes en cartes à jouer : dos ornementé dessiné en SVG, retournement 3D
+  avec tranche et reflet, inclinaison qui suit le doigt. Recto = le geste, verso = l'action.
+  Plus les règles spéciales (Joker, Carnet, Code Tactile, Un seul téléphone).
 - **📸 Souvenirs** — une photo ou vidéo courte par étape, stockée en local (IndexedDB), puis
   assemblée en planche récapitulative 1080 × 1920 à enregistrer ou partager.
 - **❤️ Cœur / Canvas** — deux mains posées ensemble trois secondes : vibration, empreinte gardée

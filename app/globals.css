@@ -403,7 +403,7 @@ textarea {
   padding: 0;
   background: none;
   cursor: pointer;
-  perspective: 1200px;
+  perspective: 1100px;
   display: block;
   width: 100%;
 }
@@ -414,16 +414,41 @@ textarea {
   aspect-ratio: 3 / 4.2;
 }
 
+/* Couche d'inclinaison : suit le doigt, revient à plat quand on lâche. */
+.card3d__tilt {
+  position: relative;
+  display: block;
+  width: 100%;
+  height: 100%;
+  transform-style: preserve-3d;
+  transform: rotateX(var(--rx, 0deg)) rotateY(var(--ry, 0deg));
+  transition: transform 0.5s cubic-bezier(0.22, 1, 0.28, 1);
+}
+.card3d:active .card3d__tilt {
+  transition-duration: 0.12s;
+}
+
 .card3d__inner {
   position: relative;
   display: block;
   width: 100%;
   height: 100%;
   transform-style: preserve-3d;
-  transition: transform 0.75s cubic-bezier(0.2, 0.8, 0.2, 1);
+  /* Léger dépassement en fin de course : le carton « retombe ». */
+  transition: transform 0.85s cubic-bezier(0.19, 1.06, 0.25, 1);
 }
 .card3d.is-flipped .card3d__inner {
   transform: rotateY(180deg);
+}
+
+/* Tranche du carton, visible de profil pendant la rotation. */
+.card3d__edge {
+  position: absolute;
+  inset: 0;
+  border-radius: var(--r-l);
+  background: linear-gradient(180deg, #e6d8cc, #cbb6a6);
+  transform: translateZ(-3px);
+  box-shadow: 0 0 0 1px rgba(90, 55, 35, 0.18);
 }
 
 .card3d__face {
@@ -443,59 +468,40 @@ textarea {
   text-align: center;
   overflow: hidden;
 }
+.card3d__face--front {
+  transform: translateZ(3px);
+}
 .card3d__face--back {
-  transform: rotateY(180deg);
+  transform: rotateY(180deg) translateZ(3px);
   background: linear-gradient(160deg, rgba(255, 90, 46, 0.16), #fff7f2);
 }
 .card3d--hero .card3d__face {
   padding: 24px;
-  box-shadow: var(--shadow);
+}
+
+/* Reflet : se déplace avec l'inclinaison, s'éteint quand on lâche. */
+.card3d__glare {
+  position: absolute;
+  inset: -30%;
+  pointer-events: none;
+  background: linear-gradient(
+    115deg,
+    transparent 38%,
+    rgba(255, 255, 255, 0.75) 50%,
+    transparent 62%
+  );
+  opacity: calc(var(--glare, 0) * 0.55);
+  transform: translateX(calc(var(--ry, 0deg) * 1.4)) translateY(calc(var(--rx, 0deg) * -1.4));
+  transition: opacity 0.4s ease;
 }
 
 .card3d:hover .card3d__face {
   border-color: var(--line-strong);
 }
 
-.cardface__num {
-  font-size: 0.7rem;
-  letter-spacing: 0.3em;
-  color: var(--accent);
-  text-transform: uppercase;
-}
-.cardface__hand {
-  width: 58%;
-  max-height: 52%;
-  color: var(--ink);
-}
-.cardface__label {
-  font-size: 0.95rem;
-  font-weight: 500;
-}
-.cardface__meaning {
-  font-family: var(--serif);
-  font-style: italic;
-  font-size: 1.18rem;
-  line-height: 1.35;
-}
-.cardface__purpose {
-  font-size: 0.84rem;
-  color: var(--muted);
-}
-.cardface__gesture {
-  font-size: 0.78rem;
-  color: var(--silver);
-}
-.cardface__flip {
-  position: absolute;
-  right: 12px;
-  bottom: 10px;
-  font-size: 0.68rem;
-  color: var(--silver);
-}
-
 .minis {
   display: grid;
-  grid-template-columns: repeat(5, minmax(0, 1fr));
+  grid-template-columns: repeat(4, minmax(0, 1fr));
   gap: 8px;
 }
 
@@ -1044,7 +1050,7 @@ tfoot td {
 
 .minis {
   display: grid;
-  grid-template-columns: repeat(5, minmax(0, 1fr));
+  grid-template-columns: repeat(4, minmax(0, 1fr));
   gap: 8px;
 }
 
@@ -1640,4 +1646,63 @@ tfoot td {
     grid-template-columns: 240px 1fr;
     align-items: center;
   }
+}
+
+/* Huit cartes alignées dès qu'il y a la place. */
+@media (min-width: 720px) {
+  .minis {
+    grid-template-columns: repeat(8, minmax(0, 1fr));
+  }
+}
+
+/* La carte d'arrêt se repère au premier coup d'œil. */
+.mini.is-safety .mini__back,
+.mini.is-safety .mini__face {
+  box-shadow: inset 0 0 0 2px var(--accent);
+  border-radius: 12px;
+}
+.card3d--paper.is-safety .card3d__face--front::after {
+  border-color: rgba(255, 90, 46, 0.55);
+}
+
+/* Sections repliées : on ne lit que si on veut lire. */
+.fold > summary {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 12px;
+  cursor: pointer;
+  list-style: none;
+  font-size: 1.05rem;
+}
+.fold > summary::-webkit-details-marker {
+  display: none;
+}
+.fold > summary::after {
+  content: "⌄";
+  color: var(--silver);
+  transition: transform 0.25s ease;
+}
+.fold[open] > summary::after {
+  transform: rotate(180deg);
+}
+.fold > summary + * {
+  margin-top: 14px;
+}
+.fold--inline {
+  margin-top: 10px;
+  border-top: 1px solid var(--line);
+  padding-top: 10px;
+}
+.fold--inline > summary {
+  font-size: 0.82rem;
+  color: var(--muted);
+}
+
+/* En-tête d'étape : titre et durée, rien d'autre tant que c'est replié. */
+.step__head-text {
+  display: flex;
+  align-items: baseline;
+  gap: 10px;
+  flex-wrap: wrap;
 }

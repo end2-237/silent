@@ -1,20 +1,36 @@
 /** Contenu éditorial de SILENT — source unique de vérité du rituel. */
 
-export type SignId = 1 | 2 | 3 | 4 | 5;
+export type SignId = 0 | 1 | 2 | 3 | 4 | 5 | 6 | 7;
+
+/** Façon de dessiner la main sur la carte. */
+export type HandVariant = "count" | "fist" | "thumb-up" | "thumb-down";
 
 export interface Sign {
   id: SignId;
-  /** Nombre de doigts levés dessinés au recto de la carte. */
-  fingers: SignId;
+  /** Nombre de doigts levés, pour la variante « count ». */
+  fingers: number;
+  variant?: HandVariant;
   /** Doigts écartés en V (signe n°2). */
   spread?: boolean;
   label: string;
   gesture: string;
   meaning: string;
   purpose: string;
+  /** Carte de sécurité : hors du décompte, utilisable sans limite. */
+  safety?: boolean;
 }
 
 export const SIGNS: Sign[] = [
+  {
+    id: 0,
+    fingers: 0,
+    variant: "fist",
+    safety: true,
+    label: "Poing fermé",
+    gesture: "Poing levé, bras tendu",
+    meaning: "J'arrête le jeu / parlons",
+    purpose: "Frein d'urgence. Gratuit, illimité, sans justification à donner.",
+  },
   {
     id: 1,
     fingers: 1,
@@ -56,10 +72,28 @@ export const SIGNS: Sign[] = [
     meaning: "I love you",
     purpose: "Affirmation et validation affective absolue.",
   },
+  {
+    id: 6,
+    fingers: 0,
+    variant: "thumb-up",
+    label: "Pouce levé",
+    gesture: "Poing, pouce vers le haut",
+    meaning: "Oui",
+    purpose: "Répond aux questions fermées, qu'aucun autre signe ne couvre.",
+  },
+  {
+    id: 7,
+    fingers: 0,
+    variant: "thumb-down",
+    label: "Pouce baissé",
+    gesture: "Poing, pouce vers le bas",
+    meaning: "Non",
+    purpose: "L'autre moitié de la réponse : sans elle, on invente des gestes.",
+  },
 ];
 
 export interface SpecialRule {
-  id: "joker" | "carnet" | "tactile";
+  id: "joker" | "carnet" | "tactile" | "telephone";
   icon: string;
   label: string;
   rule: string;
@@ -87,6 +121,13 @@ export const SPECIAL_RULES: SpecialRule[] = [
     label: "Le Code Tactile",
     rule: "1 pression sur le poignet = « Je suis là ».",
     detail: "2 pressions = « Regarde-moi ».",
+  },
+  {
+    id: "telephone",
+    icon: "📵",
+    label: "Un seul téléphone",
+    rule: "Une seule personne le porte, en mode avion.",
+    detail: "L'autre n'y touche pas de la journée.",
   },
 ];
 
@@ -126,12 +167,13 @@ export const STEPS: Step[] = [
   {
     id: 3,
     title: "Activité Ludique & Complicité",
-    minutes: 90,
+    minutes: 45,
     summary: "Bowling ou arcade. Scores, célébrations et encouragements aux 5 signes.",
     details: [
+      "45 minutes suffisent : au-delà, le bruit du lieu couvre votre silence.",
       "Les scores se gèrent au tableau, jamais à la voix.",
       "Célébrer uniquement avec les mains : 3 doigts pour partager, 5 pour valider.",
-      "Le signe 4 (désolé) sert aussi après une charrie qui tombe mal.",
+      "Une activité calme et coopérative fait aussi bien : marché, cuisine, puzzle.",
     ],
   },
   {
@@ -143,6 +185,7 @@ export const STEPS: Step[] = [
       "S'asseoir face au même paysage, pas face à face.",
       "Carnet de poche : 3 mots maximum par note, jamais plus.",
       "Observer l'autre avant d'écrire : que ressent-il, là, maintenant ?",
+      "Plan B pluie : repérer d'avance un lieu couvert et calme, galerie ou salon de thé.",
     ],
   },
   {
@@ -152,13 +195,18 @@ export const STEPS: Step[] = [
     summary: "Fin du silence, dernier Joker, question finale.",
     details: [
       "Poser les deux mains sur le canvas, ensemble, trois secondes.",
+      "Apprendre la question courte par cœur : on ne la lit pas sur un écran.",
       "Le silence ne se rompt qu'après la question.",
       "Écouter la réponse sans rien ajouter : c'est le dernier geste du rituel.",
     ],
   },
 ];
 
-export const FINAL_QUESTION =
+/** Celle qu'on prononce : courte, tenable après cinq heures de silence. */
+export const FINAL_QUESTION = "Quand as-tu senti mon cœur le plus fort, aujourd'hui ?";
+
+/** La version d'origine, gardée pour l'écrit. */
+export const FINAL_QUESTION_LONG =
   "À quel endroit précis de la journée, sans que je ne dise un seul mot, as-tu ressenti avec le plus de force que mon cœur était entièrement tourné vers le tien ?";
 
 export interface BudgetLine {
@@ -172,7 +220,7 @@ export interface BudgetLine {
 export const BUDGET: BudgetLine[] = [
   { post: "Logistique & Matériel", description: "2 carnets, stylos, adaptateur audio", min: 2000, max: 4000 },
   { post: "Étape 1 : Goûter", description: "Boissons + viennoiseries", min: 3000, max: 6000 },
-  { post: "Étape 3 : Bowling / Arcade", description: "Partie ludique à deux", min: 6000, max: 12000 },
+  { post: "Étape 3 : Bowling / Arcade", description: "Partie ludique à deux, 45 min", min: 4000, max: 9000 },
   { post: "Étape 4 : Rafraîchissements", description: "Eaux / jus en pause calme", min: 2000, max: 4000 },
   { post: "Transports & Marge", description: "Déplacements courts + marge de sécurité", min: 4000, max: 8000 },
 ];
@@ -182,11 +230,11 @@ export const BUDGET_TOTAL = BUDGET.reduce(
   { min: 0, max: 0 },
 );
 
-/** Somme des cinq étapes : 4 h 30. */
+/** Somme des cinq étapes : 3 h 45. */
 export const TOTAL_MINUTES = STEPS.reduce((acc, step) => acc + step.minutes, 0);
 
-/** Durée globale annoncée, marge de déplacement comprise : ~5 h. */
-export const RITUAL_MINUTES = 300;
+/** Durée globale annoncée, marge de déplacement comprise : ~4 h 15. */
+export const RITUAL_MINUTES = 255;
 
 export function formatFcfa(value: number): string {
   return `${value.toLocaleString("fr-FR")} FCFA`;

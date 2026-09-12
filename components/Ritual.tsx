@@ -6,6 +6,7 @@ import {
   BUDGET,
   BUDGET_TOTAL,
   FINAL_QUESTION,
+  FINAL_QUESTION_LONG,
   STEPS,
   RITUAL_MINUTES,
   TOTAL_MINUTES,
@@ -104,12 +105,7 @@ export default function Ritual() {
         <header className="page-head">
           <span className="page-head__kicker">Rituel — environ {formatDuration(RITUAL_MINUTES)}</span>
           <h1>La journée, geste après geste</h1>
-          <span className="page-head__sub">5 étapes · 5 signes · 1 question</span>
-          <p>
-            La parole mal maîtrisée crée du bruit. Pendant cinq heures, le cerveau désactive ses réponses
-            automatiques&nbsp;: on observe, on ressent, on mesure l&apos;impact de chaque geste avant de le
-            poser.
-          </p>
+          <span className="page-head__sub">8 signes · 5 étapes · 1 question</span>
         </header>
         <div className="banner__meta">
           <span className="tag">{formatDuration(TOTAL_MINUTES)} d&apos;étapes</span>
@@ -171,7 +167,7 @@ export default function Ritual() {
               ) : null}
             </div>
             <p className="note" style={{ margin: 0 }}>
-              Il démarre à la dernière bouchée du goûter et ne s&apos;arrête qu&apos;à l&apos;étape 5.
+              Départ&nbsp;: la dernière bouchée du goûter.
             </p>
           </div>
         </section>
@@ -185,8 +181,8 @@ export default function Ritual() {
             </span>
           </div>
           <p className="note">
-            Main posée sur le cœur pendant 3 secondes&nbsp;: une seule phrase orale, {MAX_WORDS_JOKER} mots maximum.
-            Le dernier joker est réservé à la question du cœur.
+            Main sur le cœur, 3 secondes&nbsp;: une phrase, {MAX_WORDS_JOKER} mots. Le dernier est pour la
+            question finale.
           </p>
           <div className="jokers">
             {Array.from({ length: JOKERS }, (_, index) => (
@@ -267,12 +263,9 @@ export default function Ritual() {
                   onClick={() => setOpen(isOpen ? null : step.id)}
                 >
                   <span className="step__num">{isDone ? "✓" : step.id}</span>
-                  <span>
+                  <span className="step__head-text">
                     <span className="step__title">{step.title}</span>
-                    <br />
-                    <span className="step__meta">
-                      {formatDuration(step.minutes)} · {step.summary}
-                    </span>
+                    <span className="step__meta">{formatDuration(step.minutes)}</span>
                   </span>
                   <span className="step__chev" aria-hidden="true">
                     ⌄
@@ -280,6 +273,9 @@ export default function Ritual() {
                 </button>
                 {isOpen ? (
                   <div className="step__body">
+                    <p className="note" style={{ margin: 0 }}>
+                      {step.summary}
+                    </p>
                     <ul>
                       {step.details.map((detail) => (
                         <li key={detail}>{detail}</li>
@@ -356,17 +352,19 @@ export default function Ritual() {
           </div>
         ) : (
           <p className="note" style={{ marginTop: 12, marginBottom: 0 }}>
-            Aucune note pour l&apos;instant. Observer d&apos;abord, écrire ensuite.
+            Observer d&apos;abord, écrire ensuite.
           </p>
         )}
       </section>
 
       {/* Budget */}
-      <section className="panel" style={{ marginTop: 18 }}>
-        <div className="panel__title">
-          <span>Grille budgétaire prévisionnelle</span>
-          <span className="panel__hint">FCFA</span>
-        </div>
+      <details className="panel fold" style={{ marginTop: 18 }}>
+        <summary>
+          <span>Grille budgétaire</span>
+          <span className="panel__hint">
+            {formatFcfa(BUDGET_TOTAL.min).replace(" FCFA", "")} – {formatFcfa(BUDGET_TOTAL.max)}
+          </span>
+        </summary>
         <div className="table-wrap">
           <table>
             <thead>
@@ -398,7 +396,7 @@ export default function Ritual() {
             </tfoot>
           </table>
         </div>
-      </section>
+      </details>
 
       <section className="panel" style={{ marginTop: 18 }}>
         <div className="panel__title">
@@ -406,7 +404,15 @@ export default function Ritual() {
           <span className="panel__hint">étape 5</span>
         </div>
         <p className="quote">« {FINAL_QUESTION} »</p>
-        <Link className="btn" href="/coeur/">
+        <details className="fold fold--inline">
+          <summary>
+            <span>La version longue</span>
+          </summary>
+          <p className="note" style={{ marginBottom: 0 }}>
+            « {FINAL_QUESTION_LONG} »
+          </p>
+        </details>
+        <Link className="btn" href="/coeur/" style={{ marginTop: 14 }}>
           ❤️ Ouvrir le canvas
         </Link>
       </section>

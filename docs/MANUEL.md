@@ -20,6 +20,13 @@ observer, ressentir et évaluer l'impact de chaque geste avant de poser un acte.
 | 3 doigts | « Partage ce moment avec moi » | Ancre l'attention sur l'instant présent. |
 | 4 doigts (main levée) | « J'ai mal ajusté mon geste / Désolé » | Corrige un écart de conduite instantanément. |
 | 5 doigts (main ouverte) | « I love you » | Affirmation et validation affective absolue. |
+| **Poing fermé** | « J'arrête le jeu / parlons » | Frein d'urgence : gratuit, illimité, sans justification. |
+| **Pouce levé** | « Oui » | Répond aux questions fermées. |
+| **Pouce baissé** | « Non » | Sans elle, on invente des gestes en douce. |
+
+Le poing fermé n'est pas un échec du rituel : c'en est une règle. Cinq heures de silence
+amplifient l'ambiguïté — un visage neutre se lit comme de la froideur — et un dispositif qui touche
+à l'intime doit offrir une sortie immédiate.
 
 **Le Joker Parle** : main posée sur le cœur pendant 3 secondes. Donne droit à une seule phrase orale
 de 10 mots maximum.
@@ -29,22 +36,31 @@ de 10 mots maximum.
 
 **Le Code Tactile** : 1 pression sur le poignet = « Je suis là » · 2 pressions = « Regarde-moi ».
 
-## 3. Déroulement étape par étape (durée globale : ~5 h 00)
+**Un seul téléphone** : une seule personne le porte, en mode avion. L'autre n'y touche pas de la
+journée. Sans cette règle, l'application devient le bruit qu'elle prétend chasser.
+
+## 3. Déroulement étape par étape (durée globale : ~4 h 15)
 
 | Étape | Durée | Contenu |
 | --- | --- | --- |
 | 1. Goûter & Lancement | 45 min | Installation dans un café calme. Explication du jeu et règlement du goûter. Le silence commence dès la dernière bouchée terminée. |
 | 2. Trajet Audio Synchronisé | 30 min | Déplacement côte à côte avec un seul fil d'écouteurs partagé (un côté chacun) relié à une playlist commune. |
-| 3. Activité Ludique & Complicité | 1 h 30 | Partie de bowling ou d'arcade. Scores, célébrations et encouragements uniquement par les 5 signes de la main. |
-| 4. Observation & Ancrage | 1 h 00 | Pause calme dans un espace vert ou un point de vue. Carnet (3 mots max) pour partager ce qu'on ressent. |
+| 3. Activité Ludique & Complicité | 45 min | Bowling, arcade — ou une activité calme et coopérative. Scores et célébrations uniquement par les signes. |
+| 4. Observation & Ancrage | 1 h 00 | Pause calme dans un espace vert ou un point de vue. Carnet (3 mots max). Plan B pluie repéré à l'avance. |
 | 5. Clôture & Question du Cœur | 45 min | Fin du silence. Dernier Joker pour poser la question finale. |
 
-Les cinq étapes totalisent 4 h 30 ; la marge de déplacement porte l'expérience à environ 5 h.
+Les cinq étapes totalisent 3 h 45 ; la marge de déplacement porte l'expérience à environ 4 h 15.
+L'étape 3 a été ramenée de 1 h 30 à 45 min : au-delà, le bruit du lieu couvre votre silence et
+c'est le décor qui parle à votre place.
 
-**Question finale :**
+**Question finale, celle qu'on prononce :**
 
-> À quel endroit précis de la journée, sans que je ne dise un seul mot, as-tu ressenti avec le plus
-> de force que mon cœur était entièrement tourné vers le tien ?
+> Quand as-tu senti mon cœur le plus fort, aujourd'hui ?
+
+La version d'origine — « À quel endroit précis de la journée, sans que je ne dise un seul mot,
+as-tu ressenti avec le plus de force que mon cœur était entièrement tourné vers le tien ? » — fait
+33 mots et demande une réponse analytique à quelqu'un qui est dans un état émotionnel. Elle reste
+belle à l'écrit ; à l'oral, après quatre heures de silence, la version courte passe.
 
 ## 4. Grille budgétaire prévisionnelle (FCFA)
 
@@ -52,10 +68,10 @@ Les cinq étapes totalisent 4 h 30 ; la marge de déplacement porte l'expérienc
 | --- | --- | --- |
 | Logistique & Matériel | 2 carnets, stylos, adaptateur audio | 2 000 – 4 000 |
 | Étape 1 : Goûter | Boissons + viennoiseries | 3 000 – 6 000 |
-| Étape 3 : Bowling / Arcade | Partie ludique à deux | 6 000 – 12 000 |
+| Étape 3 : Bowling / Arcade | Partie ludique à deux, 45 min | 4 000 – 9 000 |
 | Étape 4 : Rafraîchissements | Eaux / jus en pause calme | 2 000 – 4 000 |
 | Transports & Marge | Déplacements courts + marge de sécurité | 4 000 – 8 000 |
-| **Total** | **Expérience complète** | **17 000 – 34 000 FCFA** |
+| **Total** | **Expérience complète** | **15 000 – 31 000 FCFA** |
 
 ## 5. Cahier des charges d'interface (PWA « SILENT »)
 
@@ -63,8 +79,10 @@ Les cinq étapes totalisent 4 h 30 ; la marge de déplacement porte l'expérienc
   minimaliste).
 - **Barre flottante translucide (bottom bar)** : opacité dynamique (100 % lors du toucher, 30 %
   après 3 s d'inactivité), 3 boutons essentiels — [🎴 Cartes] [📸 Souvenirs] [❤️ Cœur / Canvas].
-- **Module 1 — Cartes 3D** : 5 cartes miniatures alignées ; la sélection d'une carte déclenche un
+- **Module 1 — Cartes 3D** : 8 cartes miniatures alignées ; la sélection d'une carte déclenche un
   retournement 3D (flip) montrant l'illustration du geste au recto et l'action associée au verso.
+  Les cartes s'inclinent sous le doigt, gardent une tranche visible pendant la rotation et
+  renvoient un reflet qui suit le mouvement.
 - **Module 2 — Galerie Souvenirs** : prise d'une photo / vidéo courte par étape, exportation
   automatique du montage récapitulatif.
 - **Module 3 — Canvas & Question du Cœur** : zone tactile pour empreinte haptique simultanée +

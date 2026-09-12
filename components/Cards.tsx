@@ -7,15 +7,22 @@ import HandSign from "./HandSign";
 import { SIGNS, SPECIAL_RULES, type Sign } from "@/lib/data";
 
 /** Deux couleurs de dos, comme deux jeux posés côte à côte. */
-function backColor(id: number): string {
-  return id % 2 === 1 ? "var(--accent)" : "var(--indigo)";
+function backColor(sign: { id: number; safety?: boolean }): string {
+  if (sign.safety) return "var(--accent)";
+  return sign.id % 2 === 1 ? "var(--accent)" : "var(--indigo)";
 }
 
 function Corner({ sign, flip }: { sign: Sign; flip?: boolean }) {
   return (
     <span className={`pip${flip ? " pip--flip" : ""}`} aria-hidden="true">
       <span className="pip__num">{sign.id}</span>
-      <HandSign className="pip__hand" fingers={sign.fingers} spread={sign.spread} title="" />
+      <HandSign
+        className="pip__hand"
+        fingers={sign.fingers}
+        variant={sign.variant}
+        spread={sign.spread}
+        title=""
+      />
     </span>
   );
 }
@@ -24,7 +31,13 @@ function Front({ sign }: { sign: Sign }) {
   return (
     <>
       <Corner sign={sign} />
-      <HandSign className="cardface__hand" fingers={sign.fingers} spread={sign.spread} title={sign.label} />
+      <HandSign
+        className="cardface__hand"
+        fingers={sign.fingers}
+        variant={sign.variant}
+        spread={sign.spread}
+        title={sign.label}
+      />
       <span className="cardface__label">{sign.label}</span>
       <span className="cardface__gesture">{sign.gesture}</span>
       <span className="cardface__flip">toucher pour retourner ↻</span>
@@ -48,7 +61,7 @@ function Back({ sign }: { sign: Sign }) {
 }
 
 export default function Cards() {
-  const [selected, setSelected] = useState<number>(SIGNS[0].id);
+  const [selected, setSelected] = useState<number>(SIGNS[1].id);
   const [flipped, setFlipped] = useState(false);
   const sign = SIGNS.find((item) => item.id === selected) ?? SIGNS[0];
 
@@ -67,17 +80,16 @@ export default function Cards() {
         <span className="page-head__kicker">Module 1 — Cartes</span>
         <h1>Le guide des signes</h1>
         <p>
-          Cinq signes, cinq intentions. Le recto montre le geste, le verso donne l&apos;action. Touchez une
-          carte pour la retourner&nbsp;: c&apos;est tout le vocabulaire de la journée.
+          Huit signes, tout le vocabulaire de la journée. Touchez une carte pour la retourner.
         </p>
       </header>
 
       <div className="cards-layout">
         {/* La couleur du dos suit la parité de la carte, comme deux jeux mêlés. */}
-        <div className="hero-glow" style={{ color: backColor(sign.id) }}>
+        <div className="hero-glow" style={{ color: backColor(sign) }}>
           <Card3D
             size="hero"
-            className="card3d--paper"
+            className={`card3d--paper${sign.safety ? " is-safety" : ""}`}
             label={sign.label}
             flipped={flipped}
             onFlip={setFlipped}
@@ -100,8 +112,8 @@ export default function Cards() {
                 <button
                   key={item.id}
                   type="button"
-                  className={`mini${isSelected ? " is-selected" : ""}`}
-                  style={{ color: backColor(item.id) }}
+                  className={`mini${isSelected ? " is-selected" : ""}${item.safety ? " is-safety" : ""}`}
+                  style={{ color: backColor(item) }}
                   onClick={() => select(item.id)}
                   aria-pressed={isSelected}
                   aria-label={`${item.label} — ${item.meaning}`}
@@ -111,6 +123,7 @@ export default function Cards() {
                       <HandSign
                         className="mini__hand"
                         fingers={item.fingers}
+                        variant={item.variant}
                         spread={item.spread}
                         title=""
                       />
@@ -133,7 +146,7 @@ export default function Cards() {
       <section style={{ marginTop: 30 }}>
         <div className="panel__title">
           <h2 style={{ fontSize: "1.05rem" }}>Règles spéciales</h2>
-          <span className="panel__hint">hors des cinq signes</span>
+          <span className="panel__hint">au-delà des signes</span>
         </div>
         <div className="rules">
           {SPECIAL_RULES.map((rule) => (

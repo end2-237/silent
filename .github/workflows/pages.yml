@@ -1,8 +1,8 @@
 name: Site
 
-# Compile le site et pousse le résultat dans la branche gh-pages.
-# Que des commandes git : rien à activer, rien qui puisse échouer faute de
-# réglage dans le dépôt.
+# Compile le site et pousse le résultat dans la branche gh-pages, accompagné
+# d'un Dockerfile de trois lignes : l'hébergeur n'a plus qu'à poser ces
+# fichiers dans un nginx, sans rien construire.
 on:
   push:
     branches: [main]
@@ -28,12 +28,12 @@ jobs:
 
       - run: npm ci
 
-      # GitHub Pages sert le site sous /<nom-du-dépôt>/.
       - run: npm run build
-        env:
-          NEXT_PUBLIC_BASE_PATH: /${{ github.event.repository.name }}
 
-      - run: touch out/.nojekyll
+      - name: Ajouter le nginx de service
+        run: |
+          cp deploy/Dockerfile deploy/nginx.conf deploy/.dockerignore out/
+          touch out/.nojekyll
 
       - name: Publier la branche gh-pages
         run: |

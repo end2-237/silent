@@ -86,17 +86,30 @@ npm run build && npx serve out
 `npm run build` produit `out/` : **1,2 Mo, 51 fichiers statiques**. Il n'y a rien à exécuter,
 aucun serveur Node à faire tourner — juste des fichiers à servir.
 
-### GitHub Pages (automatique)
+### Branche `gh-pages` : le site déjà prêt
 
 `.github/workflows/pages.yml` compile à chaque poussée sur `main` et pousse le résultat dans la
-branche **`gh-pages`** — rien que des commandes git, donc rien qui puisse échouer faute de réglage.
+branche **`gh-pages`**, accompagné d'un `Dockerfile` de trois lignes et de la configuration nginx
+(`deploy/`). Cette branche ne contient que des fichiers finis : **il n'y a plus rien à construire
+nulle part**.
 
-Une seule chose à faire, une fois : *Settings → Pages → Source* → **Deploy from a branch** →
-branche `gh-pages`, dossier `/ (root)`. Le site vit alors sur
-`https://<utilisateur>.github.io/silent/`, et le chemin de base est réglé automatiquement.
+Sur Coolify (ou tout hébergeur qui lit un dépôt) :
 
-La branche `gh-pages` contient le site fini : elle se télécharge aussi en ZIP depuis GitHub et se
-dépose telle quelle sur n'importe quel hébergeur.
+| Champ | Valeur |
+| --- | --- |
+| Branche | `gh-pages` |
+| Build Pack | **Dockerfile** |
+| Ports Exposes | `80` |
+
+L'hébergeur télécharge `nginx:1.27-alpine-slim` (5 Mo), y copie 1,2 Mo de fichiers, et c'est fini.
+Ni Node, ni npm, ni nix — à comparer aux 146 Mo de dépendances et 120 Mo d'environnement nix
+qu'exige une construction sur place.
+
+La branche se télécharge aussi en ZIP depuis GitHub : les mêmes fichiers se déposent tels quels
+dans n'importe quel dossier servi par un serveur web.
+
+Pour publier plutôt sur GitHub Pages, compiler avec le chemin de base du dépôt
+(`NEXT_PUBLIC_BASE_PATH=/silent`) — sinon les liens pointent à la racine du domaine.
 
 ### Vercel
 

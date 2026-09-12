@@ -96,6 +96,25 @@ faire, une fois : *Settings → Pages → Source* → **GitHub Actions**. Le sit
 
 Importer le dépôt, ne rien configurer, déployer. Next.js y est natif.
 
+### Nixpacks (Coolify, Railway…)
+
+`nixpacks.toml` décrit la construction : Node 22 seul, `npm ci`, `npm run build`, puis
+`node server.mjs`. Attention, `next start` ne sait pas servir un export statique&nbsp;; c'est
+`server.mjs` — une cinquantaine de lignes de Node, sans aucune dépendance — qui sert `out/`,
+avec les bons types MIME, la page 404, `sw.js` jamais mis en cache et `_next/static` en cache
+long. Le port vient de la variable `PORT` (3000 par défaut).
+
+Sur Coolify : build pack **Nixpacks**, port `3000`. La première construction reste lourde —
+l'environnement nix pèse environ 120 Mo à télécharger — donc prévoir un délai de build
+généreux&nbsp;; les suivantes réutilisent la couche déjà construite. Sur une liaison lente, mieux
+vaut publier par GitHub Pages ou envoyer `out/` par `rsync`.
+
+Le même serveur marche en local :
+
+```bash
+npm run build && npm start     # http://localhost:3000
+```
+
 ### Sur son propre serveur
 
 Copier le dossier et pointer le serveur web dessus :

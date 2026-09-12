@@ -1,0 +1,19 @@
+# Construction Nixpacks (Coolify, Railway…).
+#
+# Seul Node est installé : npm est celui fourni avec, ce qui évite à nix de
+# compiler une dérivation npm séparée. Le résultat est un export statique,
+# servi par server.mjs — « next start » ne sait pas servir output: "export".
+
+providers = ["node"]
+
+[phases.setup]
+nixPkgs = ["nodejs_22"]
+
+[phases.install]
+cmds = ["npm ci --no-audit --no-fund"]
+
+[phases.build]
+cmds = ["npm run build"]
+
+[start]
+cmd = "node server.mjs"

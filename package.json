@@ -2,11 +2,11 @@
   "name": "silent",
   "version": "1.0.0",
   "private": true,
-  "description": "SILENT — PWA compagnon du rituel d'immersion non-verbale d'une journée.",
+  "description": "SILENT \u2014 PWA compagnon du rituel d'immersion non-verbale d'une journ\u00e9e.",
   "scripts": {
     "dev": "next dev",
     "build": "next build",
-    "start": "next start",
+    "start": "node server.mjs",
     "lint": "eslint .",
     "typecheck": "tsc --noEmit",
     "icons": "python3 tools/make_icons.py"

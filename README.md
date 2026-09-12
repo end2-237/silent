@@ -83,73 +83,39 @@ npm run build && npx serve out
 
 ## Déploiement
 
-L'application est exportée en statique (`output: "export"`), donc hébergeable partout.
+`npm run build` produit `out/` : **1,2 Mo, 51 fichiers statiques**. Il n'y a rien à exécuter,
+aucun serveur Node à faire tourner — juste des fichiers à servir.
 
-### Image prête à l'emploi (recommandé)
+### GitHub Pages (automatique)
 
-`.github/workflows/image.yml` compile l'image sur les machines de GitHub à chaque poussée sur
-`main` et la publie sur `ghcr.io/end2-237/silent:latest`. Le serveur de déploiement ne compile
-plus rien : il tire environ **7 Mo** (nginx alpine-slim + le site).
+`.github/workflows/pages.yml` compile et publie à chaque poussée sur `main`. Une seule chose à
+faire, une fois : *Settings → Pages → Source* → **GitHub Actions**. Le site vit alors sur
+`https://<utilisateur>.github.io/silent/` ; le workflow règle tout seul le chemin de base.
 
-Sur Coolify : créer la ressource en **Docker Image** plutôt qu'en dépôt Git, image
-`ghcr.io/end2-237/silent:latest`, port `80`. Rendre le paquet public dans GitHub
-(*Packages → Package settings → Change visibility*) ou donner à Coolify un identifiant de registre.
+### Vercel
 
-Pour redéployer automatiquement après chaque publication, renseigner dans les secrets du dépôt
-`COOLIFY_WEBHOOK` (l'URL de déploiement de la ressource) et `COOLIFY_TOKEN` (un jeton d'API
-Coolify) ; l'étape finale du workflow s'active alors toute seule.
+Importer le dépôt, ne rien configurer, déployer. Next.js y est natif.
 
-### Construire sur le serveur
+### Sur son propre serveur
 
-Le dépôt contient un `Dockerfile` en deux étapes : Node 22 compile l'export, puis nginx 1.27 sert
-`out/`. L'image finale ne contient ni Node ni `node_modules`.
+Copier le dossier et pointer le serveur web dessus :
 
 ```bash
-docker build -t silent .
-docker run --rm -p 8080:80 silent   # http://localhost:8080
+npm run build
+rsync -av --delete out/ utilisateur@serveur:/var/www/silent/
 ```
 
-**Sur Coolify**, choisir le build pack **Dockerfile** (et non Nixpacks) dans
-*Configuration → General*, et exposer le port **80**. Nixpacks échoue sur les petites machines :
-l'installation de l'environnement nix dépasse largement le délai de build, avant même d'avoir
-installé les dépendances npm.
+N'importe quel nginx, Caddy ou Apache suffit. Deux réglages utiles côté serveur : ne pas mettre
+`sw.js` en cache (sinon une ancienne version reste collée sur les appareils installés), et servir
+les routes en dossiers (`/cartes/index.html`).
 
-⚠️ Cette voie suppose une bonne liaison vers Docker Hub : `node:22-alpine` pèse 55 Mo, et sur un
-serveur qui télécharge à 66 Ko/s cela représente un quart d'heure. Dans ce cas, préférer l'image
-prête à l'emploi ci-dessus.
+Pour un sous-dossier, indiquer le chemin de base au build :
 
-#### Combien de temps, et pourquoi
+```bash
+NEXT_PUBLIC_BASE_PATH=/silent npm run build
+```
 
-Ce qui est servi est minuscule : **1,2 Mo au total, 51 fichiers**, environ 650 Ko au premier
-chargement. Le temps de déploiement ne vient pas de l'application mais de l'outillage qui la
-fabrique : `node_modules` pèse **567 Mo pour 3 dépendances d'exécution**, l'essentiel étant les
-binaires natifs de Next (`next` + `@next` = 386 Mo).
-
-| Étape | Coût |
-| --- | --- |
-| `npm ci` | ~15 s ici, quelques minutes sur une petite machine |
-| `next build` | ~5 s |
-| Images de base (`node:22-alpine` 55 Mo, `nginx:1.27-alpine-slim` 5 Mo) | téléchargées une seule fois |
-| Image finale poussée | quelques Mo : ni Node, ni `node_modules` |
-
-La couche `npm ci` est réutilisée telle quelle tant que `package-lock.json` ne change pas : un
-déploiement qui ne touche que du code ne réinstalle rien. Sur Coolify, vérifier que l'option
-*Force rebuild without cache* est **désactivée**, sinon chaque déploiement repart de zéro.
-
-La configuration nginx (`docker/nginx.conf`) sert les routes exportées en dossiers
-(`/cartes/index.html`), interdit la mise en cache de `sw.js` — sinon une ancienne version reste
-collée sur les appareils installés — et met les fichiers hachés de `_next/static` en cache long.
-
-### Autres hébergeurs
-
-- **Vercel / Netlify / tout hébergeur statique** : servir le dossier `out/`.
-- **Sous-dossier** (GitHub Pages par exemple) : renseigner le chemin de base au build.
-
-  ```bash
-  NEXT_PUBLIC_BASE_PATH=/silent npm run build
-  ```
-
-  Le manifeste, les icônes et le service worker suivent automatiquement ce préfixe.
+Le manifeste, les icônes et le service worker suivent automatiquement ce préfixe.
 
 ## Structure
 

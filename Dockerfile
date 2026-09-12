@@ -8,10 +8,12 @@ FROM node:22-alpine AS builder
 WORKDIR /app
 ENV NEXT_TELEMETRY_DISABLED=1
 
-# Les dépendances d'abord : cette couche est mise en cache tant que le
-# verrou ne bouge pas.
+# Les dépendances d'abord : cette couche est réutilisée telle quelle tant que
+# le verrou ne bouge pas. Le cache npm est monté par BuildKit, pour ne pas
+# retélécharger les paquets quand il bouge.
 COPY package.json package-lock.json ./
-RUN npm ci --no-audit --no-fund
+RUN --mount=type=cache,target=/root/.npm \
+    npm ci --no-audit --no-fund --prefer-offline
 
 COPY . .
 RUN npm run build

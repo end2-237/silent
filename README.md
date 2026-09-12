@@ -100,6 +100,24 @@ docker run --rm -p 8080:80 silent   # http://localhost:8080
 l'installation de l'environnement nix dépasse largement le délai de build, avant même d'avoir
 installé les dépendances npm.
 
+#### Combien de temps, et pourquoi
+
+Ce qui est servi est minuscule : **1,2 Mo au total, 51 fichiers**, environ 650 Ko au premier
+chargement. Le temps de déploiement ne vient pas de l'application mais de l'outillage qui la
+fabrique : `node_modules` pèse **567 Mo pour 3 dépendances d'exécution**, l'essentiel étant les
+binaires natifs de Next (`next` + `@next` = 386 Mo).
+
+| Étape | Coût |
+| --- | --- |
+| `npm ci` | ~15 s ici, quelques minutes sur une petite machine |
+| `next build` | ~5 s |
+| Images de base (`node:22-alpine`, `nginx:1.27-alpine`) | ~70 Mo, téléchargées une seule fois |
+| Image finale poussée | quelques Mo : ni Node, ni `node_modules` |
+
+La couche `npm ci` est réutilisée telle quelle tant que `package-lock.json` ne change pas : un
+déploiement qui ne touche que du code ne réinstalle rien. Sur Coolify, vérifier que l'option
+*Force rebuild without cache* est **désactivée**, sinon chaque déploiement repart de zéro.
+
 La configuration nginx (`docker/nginx.conf`) sert les routes exportées en dossiers
 (`/cartes/index.html`), interdit la mise en cache de `sw.js` — sinon une ancienne version reste
 collée sur les appareils installés — et met les fichiers hachés de `_next/static` en cache long.

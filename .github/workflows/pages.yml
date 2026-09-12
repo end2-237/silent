@@ -1,19 +1,18 @@
-name: Pages
+name: Site
 
-# Un seul travail : Next compile l'export statique, GitHub Pages le sert.
-# Pas de Docker, pas de registre, pas de serveur à entretenir.
+# Compile le site et pousse le résultat dans la branche gh-pages.
+# Que des commandes git : rien à activer, rien qui puisse échouer faute de
+# réglage dans le dépôt.
 on:
   push:
     branches: [main]
   workflow_dispatch:
 
 permissions:
-  contents: read
-  pages: write
-  id-token: write
+  contents: write
 
 concurrency:
-  group: pages
+  group: site
   cancel-in-progress: true
 
 jobs:
@@ -29,25 +28,18 @@ jobs:
 
       - run: npm ci
 
-      # Pages sert le site sous /<nom-du-dépôt>/ : le chemin de base suit.
+      # GitHub Pages sert le site sous /<nom-du-dépôt>/.
       - run: npm run build
         env:
           NEXT_PUBLIC_BASE_PATH: /${{ github.event.repository.name }}
 
       - run: touch out/.nojekyll
 
-      - uses: actions/configure-pages@v5
-
-      - uses: actions/upload-pages-artifact@v3
-        with:
-          path: out
-
-  deploy:
-    needs: build
-    runs-on: ubuntu-latest
-    environment:
-      name: github-pages
-      url: ${{ steps.deployment.outputs.page_url }}
-    steps:
-      - id: deployment
-        uses: actions/deploy-pages@v4
+      - name: Publier la branche gh-pages
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git add -f out
+          tree=$(git write-tree --prefix=out/)
+          commit=$(git commit-tree "$tree" -m "Site compilé depuis ${GITHUB_SHA:0:7}")
+          git push -f origin "$commit:refs/heads/gh-pages"

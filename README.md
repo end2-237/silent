@@ -88,9 +88,15 @@ aucun serveur Node à faire tourner — juste des fichiers à servir.
 
 ### GitHub Pages (automatique)
 
-`.github/workflows/pages.yml` compile et publie à chaque poussée sur `main`. Une seule chose à
-faire, une fois : *Settings → Pages → Source* → **GitHub Actions**. Le site vit alors sur
-`https://<utilisateur>.github.io/silent/` ; le workflow règle tout seul le chemin de base.
+`.github/workflows/pages.yml` compile à chaque poussée sur `main` et pousse le résultat dans la
+branche **`gh-pages`** — rien que des commandes git, donc rien qui puisse échouer faute de réglage.
+
+Une seule chose à faire, une fois : *Settings → Pages → Source* → **Deploy from a branch** →
+branche `gh-pages`, dossier `/ (root)`. Le site vit alors sur
+`https://<utilisateur>.github.io/silent/`, et le chemin de base est réglé automatiquement.
+
+La branche `gh-pages` contient le site fini : elle se télécharge aussi en ZIP depuis GitHub et se
+dépose telle quelle sur n'importe quel hébergeur.
 
 ### Vercel
 

@@ -51,8 +51,15 @@ jobs:
 
       # Facultatif : prévient Coolify qu'une nouvelle image est prête.
       # Renseigner les secrets COOLIFY_WEBHOOK et COOLIFY_TOKEN pour l'activer.
+      # Le test se fait dans le script : le contexte « secrets » n'est pas
+      # autorisé dans un « if », GitHub refuserait le workflow entier.
       - name: Déclencher le redéploiement Coolify
-        if: ${{ secrets.COOLIFY_WEBHOOK != '' }}
+        env:
+          COOLIFY_WEBHOOK: ${{ secrets.COOLIFY_WEBHOOK }}
+          COOLIFY_TOKEN: ${{ secrets.COOLIFY_TOKEN }}
         run: |
-          curl -fsS -X GET "${{ secrets.COOLIFY_WEBHOOK }}" \
-            -H "Authorization: Bearer ${{ secrets.COOLIFY_TOKEN }}"
+          if [ -z "$COOLIFY_WEBHOOK" ]; then
+            echo "Aucun webhook configuré : rien à déclencher."
+            exit 0
+          fi
+          curl -fsS -X GET "$COOLIFY_WEBHOOK" -H "Authorization: Bearer $COOLIFY_TOKEN"
